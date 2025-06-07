@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Visualization</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        svg {
+            display: block;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>My Interactive Visualization</h1>
+    <svg width="600" height="400"></svg>
+    <script>
+        const svg = d3.select("svg");
+        svg.append("circle")
+            .attr("cx", 300)
+            .attr("cy", 200)
+            .attr("r", 100)
+            .attr("fill", "steelblue");
+    </script>
+</body>
+</html>
