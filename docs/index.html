@@ -2,13 +2,14 @@
 <html lang="en">
 
 <head>
+    <link href='https://fonts.googleapis.com/css?family=JetBrains Mono' rel='stylesheet'>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Visualization</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'JetBrains Mono';
         }
         
         svg {
@@ -23,6 +24,24 @@
     <div id="odmr"></div>
     <script type="module" src="script.js"></script>
 
+    <div id="odmr"></div>
+
+    <div class="slider-container">
+        <label for="slider">Magnetic Field Strength:</label>
+        <input type="range" id="slider" min="0" max="0.2" step="0.01" value="0.1">
+    </div>
+
+    <style>
+        .slider-container {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 400px;
+            background-color: #f9f9f9;
+        }
+    </style>
 
 </body>
 
