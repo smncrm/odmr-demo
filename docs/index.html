@@ -26,7 +26,16 @@
 
     <div class="slider-container">
         <label for="slider">Magnetic Field Strength</label>
-        <input type="range" id="slider" min="0" max="0.2" step="0.01" value="0.1">
+        <input type="range" id="slider" min="0" max="10" step="0.01" value="5.00">
+        <span id="slider-value">5.00 mT</span>
+        <script>
+            const slider = document.getElementById('slider');
+            const sliderValue = document.getElementById('slider-value');
+
+            slider.addEventListener('input', function() {
+                sliderValue.textContent = parseFloat(this.value).toFixed(2) + ' mT';
+            });
+        </script>
     </div>
 
     <style>
@@ -36,7 +45,7 @@
             padding: 10px;
             margin: 20px auto;
             width: 80%;
-            max-width: 400px;
+            max-width: 500px;
             background-color: #f9f9f9;
         }
     </style>

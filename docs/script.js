@@ -1,5 +1,14 @@
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
 
+// Parameters
+const zeroFieldSplitting = 2.87; // GHz
+const gyromagneticRatio = 28.0; // GHz/T
+const amps = [-0.3, -0.3];
+const widths = [0.01, 0.01];
+
+// Generate x values
+const x = linspace(zeroFieldSplitting - 0.3, zeroFieldSplitting + 0.3, 1000);
+
 // Function to generate an array of evenly spaced numbers (similar to np.linspace)
 function linspace(start, stop, num) {
     const step = (stop - start) / (num - 1);
@@ -28,10 +37,10 @@ function multiPeakLorentzian(x, amplitudes, centers, widths, constant = 1) {
     return result;
 }
 
-// Function to update the centers based on the magnetic field strength
+// Function to update the centers based on the magnetic field strength (in mT)
 function computeCenters(magneticFieldStrength) {
-    // Update each center by multiplying with the slider value
-    return [2.87 - magneticFieldStrength, 2.87 + magneticFieldStrength];
+    const delta = gyromagneticRatio * magneticFieldStrength / 1000;
+    return [zeroFieldSplitting - delta, zeroFieldSplitting + delta];
 }
 
 
@@ -39,7 +48,8 @@ function computeCenters(magneticFieldStrength) {
 function updatePlot(sliderValue) {
     // Recalculate centers based on the slider value
     const centers = computeCenters(sliderValue);
-
+    // Log the centers for debugging
+    console.log("Centers:", centers);
     // Recalculate Lorentzian values using the slider value
     const updatedY = multiPeakLorentzian(x, amps, centers, widths);
 
@@ -68,39 +78,6 @@ function updatePlot(sliderValue) {
     odmrdiv.appendChild(updatedPlot);
 }
 
-// Parameters
-const amps = [-0.3, -0.3];
-const centers = computeCenters(0.1);
-const widths = [0.01, 0.01];
-
-// Generate x values
-const x = linspace(2.7, 3.1, 1000);
-
-// Calculate Lorentzian values
-const y = multiPeakLorentzian(x, amps, centers, widths);
-
-// Combine x and y into a data array
-const data = x.map((xi, i) => ({ x: xi, y: y[i] }));
-
-// Plot using Observable Plot
-const odmrplot = Plot.plot({
-    x: {
-        label: "Frequency (GHz)",
-        grid: true,
-    },
-    y: {
-        label: "Fluorescence (normalised)",
-        grid: true,
-        domain: [0.66, 1],
-    },
-    marks: [
-        Plot.line(data, { x: "x", y: "y", stroke: "steelblue" })
-    ]
-});
-
-// Append the plot to the div
-const odmrdiv = document.getElementById("odmr");
-odmrdiv.appendChild(odmrplot);
 
 // Add an event listener to the slider
 const slider = document.getElementById("slider");
