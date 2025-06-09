@@ -42,18 +42,17 @@ const y = multiPeakLorentzian(x, amps, centers, widths);
 // Combine x and y into a data array
 const data = x.map((xi, i) => ({ x: xi, y: y[i] }));
 
-// Calculate the min and max of the y values
-const yMin = Math.min(...y);
-const yMax = Math.max(...y);
-
-// Add some padding to the y-axis range
-const yPadding = 0.2 * (yMax - yMin); // 20% padding
-const yDomain = [yMin - yPadding, yMax + yPadding];
-
 // Plot using Observable Plot
 const odmrplot = Plot.plot({
-    x: { label: "Frequency (GHz)" },
-    y: { label: "Fluorescence (normalised)", grid: true, domain: yDomain },
+    x: {
+        label: "Frequency (GHz)",
+        grid: true,
+    },
+    y: {
+        label: "Fluorescence (normalised)",
+        grid: true,
+        domain: [0.66, 1],
+    },
     marks: [
         Plot.line(data, { x: "x", y: "y", stroke: "steelblue" })
     ]
