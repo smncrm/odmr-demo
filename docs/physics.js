@@ -29,12 +29,6 @@ export function multiPeakLorentzian(x, amplitudes, centers, widths, constant = 1
     return result;
 }
 
-// Function to compute the centers based on the magnetic field strength (in mT)
-export function computeCenters(magneticFieldStrength) {
-    const delta = gyromagneticRatio * magneticFieldStrength / 1000;
-    return [zeroFieldSplitting - delta, zeroFieldSplitting + delta];
-}
-
 // Function to compute the factor for projecting onto the NV axes, 
 // i.e. the cosine of the angle between the magnetic field vector and the NV axes
 export function computeProjectionFactor(vector) {
@@ -44,4 +38,16 @@ export function computeProjectionFactor(vector) {
         return dotProduct / norm / Math.sqrt(3); // Normalize by the length of the vector and the NV axis (which is always sqrt(3))
     });
     return normalizedInnerProducts.map(Math.abs);
+}
+
+// Function to update the centers based on the magnetic field strength (mT)
+export function computeCenters(magneticFieldStrength, x, y, z) {
+    const mag_field_vector = [x, y, z];
+    const projectionFactors = computeProjectionFactor(mag_field_vector);
+
+    const doubledProjectionFactors = projectionFactors.flatMap(factor => [factor, -factor]);
+    const energyShift = gyromagneticRatio * magneticFieldStrength / 1000;
+    const centers = doubledProjectionFactors.map(factor => zeroFieldSplitting + factor * energyShift);
+
+    return centers;
 }
