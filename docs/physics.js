@@ -1,3 +1,7 @@
+// Parameters
+export const zeroFieldSplitting = 2.87; // GHz
+const gyromagneticRatio = 28.0; // GHz/T
+
 // Single peak Lorentzian function
 function singlePeakLorentzian(x, amplitude, center, width, constant = 1) {
     // x is expected to be an array
@@ -18,4 +22,10 @@ export function multiPeakLorentzian(x, amplitudes, centers, widths, constant = 1
     });
 
     return result;
+}
+
+// Function to compute the centers based on the magnetic field strength (in mT)
+export function computeCenters(magneticFieldStrength) {
+    const delta = gyromagneticRatio * magneticFieldStrength / 1000;
+    return [zeroFieldSplitting - delta, zeroFieldSplitting + delta];
 }

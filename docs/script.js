@@ -1,21 +1,13 @@
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
 import { linspace } from "./utils.js";
-import { multiPeakLorentzian } from "./physics.js";
+import { multiPeakLorentzian, computeCenters, zeroFieldSplitting } from "./physics.js";
 
 // Parameters
-const zeroFieldSplitting = 2.87; // GHz
-const gyromagneticRatio = 28.0; // GHz/T
 const amps = [-0.3, -0.3];
 const widths = [0.01, 0.01];
 
 // Generate x values
 const x = linspace(zeroFieldSplitting - 0.3, zeroFieldSplitting + 0.3, 1000);
-
-// Function to update the centers based on the magnetic field strength (in mT)
-function computeCenters(magneticFieldStrength) {
-    const delta = gyromagneticRatio * magneticFieldStrength / 1000;
-    return [zeroFieldSplitting - delta, zeroFieldSplitting + delta];
-}
 
 // Function to update the plot based on new inputs
 function updatePlot(sliderValue) {
