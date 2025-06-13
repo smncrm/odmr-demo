@@ -1,4 +1,5 @@
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
+import { linspace } from "./utils.js";
 
 // Parameters
 const zeroFieldSplitting = 2.87; // GHz
@@ -8,12 +9,6 @@ const widths = [0.01, 0.01];
 
 // Generate x values
 const x = linspace(zeroFieldSplitting - 0.3, zeroFieldSplitting + 0.3, 1000);
-
-// Function to generate an array of evenly spaced numbers (similar to np.linspace)
-function linspace(start, stop, num) {
-    const step = (stop - start) / (num - 1);
-    return Array.from({ length: num }, (_, i) => start + i * step);
-}
 
 // Single peak Lorentzian function
 function singlePeakLorentzian(x, amplitude, center, width, constant = 1) {
