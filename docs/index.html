@@ -12,6 +12,12 @@
             font-family: 'JetBrains Mono';
         }
         
+        input,
+        textarea,
+        select {
+            font-family: inherit;
+        }
+        
         svg {
             display: block;
             margin: auto;
@@ -36,7 +42,30 @@
                 sliderValue.textContent = parseFloat(this.value).toFixed(2) + ' mT';
             });
         </script>
+
+        <div class="input-group">
+            <label for="x-value">Magnetic Field Orientation: X</label>
+            <input type="number" id="x-value" step="0.01" value="1">
+        </div>
+
+        <div class="input-group">
+            <label for="y-value">Magnetic Field Orientation: Y</label>
+            <input type="number" id="y-value" step="0.01" value="1">
+        </div>
+
+        <div class="input-group">
+            <label for="z-value">Magnetic Field Orientation: Z</label>
+            <input type="number" id="z-value" step="0.01" value="1">
+        </div>
     </div>
+
+    <style>
+        .input-group {
+            display: block;
+            flex-direction: column;
+            margin: 10px 0;
+        }
+    </style>
 
     <style>
         .slider-container {
