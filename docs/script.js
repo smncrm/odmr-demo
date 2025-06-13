@@ -13,8 +13,7 @@ const x = linspace(zeroFieldSplitting - 0.3, zeroFieldSplitting + 0.3, 1000);
 function updatePlot(sliderValue) {
     // Recalculate centers based on the slider value
     const centers = computeCenters(sliderValue);
-    // Log the centers for debugging
-    console.log("Centers:", centers);
+
     // Recalculate Lorentzian values using the slider value
     const updatedY = multiPeakLorentzian(x, amps, centers, widths);
 
