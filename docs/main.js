@@ -3,8 +3,8 @@ import { linspace } from "./utils.js";
 import { multiPeakLorentzian, computeCenters, zeroFieldSplitting } from "./physics.js";
 
 // Parameters
-const amps = [-0.3, -0.3];
-const widths = [0.01, 0.01];
+const amps = [-0.3, -0.3, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1]; // Amplitudes for the Lorentzian peaks
+const widths = [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01]; // Widths for the Lorentzian peaks
 
 // Generate x values
 const x = linspace(zeroFieldSplitting - 0.3, zeroFieldSplitting + 0.3, 1000);
@@ -12,7 +12,7 @@ const x = linspace(zeroFieldSplitting - 0.3, zeroFieldSplitting + 0.3, 1000);
 // Function to update the plot based on new inputs
 function updatePlot(sliderValue) {
     // Recalculate centers based on the slider value
-    const centers = computeCenters(sliderValue);
+    const centers = computeCenters(sliderValue, 1, 1, 1);
 
     // Recalculate Lorentzian values using the slider value
     const updatedY = multiPeakLorentzian(x, amps, centers, widths);
