@@ -3,16 +3,16 @@ import { linspace } from "./utils.js";
 import { multiPeakLorentzian, computeCenters, zeroFieldSplitting } from "./physics.js";
 
 // Parameters
-const amps = [-0.3, -0.3, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1]; // Amplitudes for the Lorentzian peaks
+const amps = [-0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1]; // Amplitudes for the Lorentzian peaks
 const widths = [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01]; // Widths for the Lorentzian peaks
 
 // Generate x values
 const x = linspace(zeroFieldSplitting - 0.3, zeroFieldSplitting + 0.3, 1000);
 
 // Function to update the plot based on new inputs
-function updatePlot(sliderValue) {
+function updatePlot(sliderValue, xValue = 1, yValue = 1, zValue = 1) {
     // Recalculate centers based on the slider value
-    const centers = computeCenters(sliderValue, 1, 1, 1);
+    const centers = computeCenters(sliderValue, xValue, yValue, zValue);
 
     // Recalculate Lorentzian values using the slider value
     const updatedY = multiPeakLorentzian(x, amps, centers, widths);
@@ -43,11 +43,23 @@ function updatePlot(sliderValue) {
 }
 
 
-// Add an event listener to the slider
+// Add event listeners to the slider and input fields
 const slider = document.getElementById("slider");
-slider.addEventListener("input", (event) => {
-    const sliderValue = parseFloat(event.target.value); // Get the slider value
-    updatePlot(sliderValue); // Update the plot with the new slider value
+const xInput = document.getElementById("x-value");
+const yInput = document.getElementById("y-value");
+const zInput = document.getElementById("z-value");
+
+const updatePlotWithInputs = () => {
+    const sliderValue = parseFloat(slider.value);
+    const xValue = parseFloat(xInput.value);
+    const yValue = parseFloat(yInput.value);
+    const zValue = parseFloat(zInput.value);
+    updatePlot(sliderValue, xValue, yValue, zValue);
+};
+
+slider.addEventListener("input", updatePlotWithInputs);
+[xInput, yInput, zInput].forEach(input => {
+    input.addEventListener("input", updatePlotWithInputs);
 });
 
 // Initial plot rendering with default slider value
