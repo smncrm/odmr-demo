@@ -7,22 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NV ODMR Demo</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <style>
-        body {
-            font-family: 'JetBrains Mono';
-        }
-        
-        input,
-        textarea,
-        select {
-            font-family: inherit;
-        }
-        
-        svg {
-            display: block;
-            margin: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -30,10 +15,16 @@
     <div id="odmr"></div>
     <script type="module" src="main.js"></script>
 
-    <div class="slider-container">
-        <label for="slider">Magnetic Field Strength</label>
-        <input type="range" id="slider" min="0" max="10" step="0.01" value="5.00">
-        <span id="slider-value">5.00 mT</span>
+    <div class="input-container">
+        <div class="row">
+            <div class="columnleft">
+                <label for="slider">Magnetic Field Strength</label>
+            </div>
+            <div class="columnright">
+                <input type="range" id="slider" min="0" max="10" step="0.01" value="5.00" style="width: 180px;">
+                <span id="slider-value" style="float: right;">5.00 mT</span>
+            </div>
+        </div>
         <script>
             const slider = document.getElementById('slider');
             const sliderValue = document.getElementById('slider-value');
@@ -43,15 +34,18 @@
             });
         </script>
 
-        <div class="toggle-container">
-            <label for="toggle-switch">Select NV Axes:</label>
-            <label class="switch">
-        <input type="checkbox" id="toggle-switch">
-        <span class="slider"></span>
-    </label>
-            <span id="toggle-status">Single NV Axis</span>
-        </div>
+        <div class="row">
+            <div class="columnleft">
+                <label for="toggle-switch">Use all NV axes:</label>
+            </div>
+            <div class="columnright">
+                <label class="switch" style="float: right;">
+                <input type="checkbox" id="toggle-switch">
+                <span class="slider"></span>
+            </label>
+            </div>
 
+        </div>
         <script>
             const toggleSwitch = document.getElementById('toggle-switch');
             const toggleStatus = document.getElementById('toggle-status');
@@ -60,95 +54,30 @@
             });
         </script>
 
-        <style>
-            .toggle-container {
-                display: flex;
-                align-items: center;
-                margin: 10px 0;
-            }
-            
-            .switch {
-                position: relative;
-                display: inline-block;
-                width: 60px;
-                height: 34px;
-                margin-left: 10px;
-            }
-            
-            .switch input {
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
-            
-            .slider {
-                position: absolute;
-                cursor: pointer;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: #ccc;
-                transition: .4s;
-                border-radius: 34px;
-            }
-            
-            .slider:before {
-                position: absolute;
-                content: "";
-                height: 26px;
-                width: 26px;
-                left: 4px;
-                bottom: 4px;
-                background-color: white;
-                transition: .4s;
-                border-radius: 50%;
-            }
-            
-            input:checked+.slider {
-                background-color: #2196F3;
-            }
-            
-            input:checked+.slider:before {
-                transform: translateX(26px);
-            }
-        </style>
-        <div class="input-group">
-            <label for="x-value">Magnetic Field Orientation: X</label>
-            <input type="number" id="x-value" step="0.01" value="1">
-        </div>
+        <div class="row">
+            <div class="columnleft">
+                <label>Magnetic Field Orientation:</label>
 
-        <div class="input-group">
-            <label for="y-value">Magnetic Field Orientation: Y</label>
-            <input type="number" id="y-value" step="0.01" value="1">
-        </div>
-
-        <div class="input-group">
-            <label for="z-value">Magnetic Field Orientation: Z</label>
-            <input type="number" id="z-value" step="0.01" value="1">
+            </div>
+            <div class="columnright">
+                <div style="float: right;">
+                    <div class="input-group">
+                        <label for="x-value">X</label>
+                        <input type="number" id="x-value" step="0.01" value="1">
+                    </div>
+                    <div class="input-group">
+                        <label for="y-value">Y</label>
+                        <input type="number" id="y-value" step="0.01" value="1">
+                    </div>
+                    <div class="input-group" style="float: right;">
+                        <label for="z-value">Z</label>
+                        <input type="number" id="z-value" step="0.01" value="1">
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
-
-    <style>
-        .input-group {
-            display: block;
-            flex-direction: column;
-            margin: 10px 0;
-        }
-    </style>
-
-    <style>
-        .slider-container {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin: 20px auto;
-            width: 80%;
-            max-width: 500px;
-            background-color: #f9f9f9;
-        }
-    </style>
 
 </body>
 
