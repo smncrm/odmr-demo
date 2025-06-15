@@ -18,26 +18,26 @@
     <div class="input-container">
         <div class="row">
             <div class="columnleft">
-                <label for="slider">Magnetic field strength (mT)</label>
+                <label for="slider-mag">Magnetic field strength (mT)</label>
             </div>
             <div class="columnright">
-                <input type="range" id="slider" min="0" max="10" step="0.01" value="0.00" style="width: 180px;">
+                <input type="range" id="slider-mag" min="0" max="10" step="0.01" value="0.00" style="width: 180px;">
 
-                <input type="number" id="manual-input" min="0" max="10" step="0.01" value="0.00" style="width: 50px; float: right; margin-left: 10px;" oninput=enforceMinMax(this);>
+                <input type="number" id="manual-input-mag" min="0" max="10" step="0.01" value="0.00" style="width: 50px; float: right; margin-left: 10px;" oninput=enforceMinMax(this);>
             </div>
         </div>
         <script>
-            const slider = document.getElementById('slider');
-            const manualInput = document.getElementById('manual-input');
+            const sliderMag = document.getElementById('slider-mag');
+            const manualInputMag = document.getElementById('manual-input-mag');
 
-            slider.addEventListener('input', function() {
+            sliderMag.addEventListener('input', function() {
                 const value = parseFloat(this.value).toFixed(2);
-                manualInput.value = value; // Update manual input when slider changes
+                manualInputMag.value = value; // Update manual input when slider changes
             });
 
-            manualInput.addEventListener('input', function() {
+            manualInputMag.addEventListener('input', function() {
                 const value = parseFloat(this.value).toFixed(2);
-                slider.value = value; // Update slider when manual input changes
+                sliderMag.value = value; // Update slider when manual input changes
 
             });
         </script>

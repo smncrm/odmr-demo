@@ -50,15 +50,15 @@ function updatePlot(sliderValue, xValue = 1, yValue = 1, zValue = 1, useAllAxes 
 
 
 // Add event listeners to the slider and input fields
-const slider = document.getElementById("slider");
-const strengthInput = document.getElementById("manual-input");
+const sliderMag = document.getElementById("slider-mag");
+const manualInputMag = document.getElementById("manual-input-mag");
 const xInput = document.getElementById("x-value");
 const yInput = document.getElementById("y-value");
 const zInput = document.getElementById("z-value");
 const toggleSwitch = document.getElementById('toggle-switch');
 
 const updatePlotWithInputs = () => {
-    const sliderValue = parseFloat(slider.value);
+    const sliderValue = parseFloat(sliderMag.value);
     const xValue = parseFloat(xInput.value);
     const yValue = parseFloat(yInput.value);
     const zValue = parseFloat(zInput.value);
@@ -68,11 +68,11 @@ const updatePlotWithInputs = () => {
 };
 
 
-[slider, strengthInput, xInput, yInput, zInput].forEach(input => {
+[sliderMag, manualInputMag, xInput, yInput, zInput].forEach(input => {
     input.addEventListener("input", updatePlotWithInputs);
 });
 
 toggleSwitch.addEventListener('change', updatePlotWithInputs);
 
 // Initial plot rendering with default slider value
-updatePlot(parseFloat(slider.value));
+updatePlot(parseFloat(sliderMag.value));
