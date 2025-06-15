@@ -8,21 +8,21 @@ const nv_001 = [-1, -1, 1];
 const nv_axes = [nv_111, nv_100, nv_010, nv_001];
 
 // Single peak Lorentzian function
-function singlePeakLorentzian(x, amplitude, center, width, constant = 1) {
+function singlePeakLorentzian(x, amplitude, center, width, noise = 0, constant = 1) {
     // x is expected to be an array
-    return x.map(value => amplitude * (width ** 2 / ((value - center) ** 2 + width ** 2)) + constant);
+    return x.map(value => amplitude * (width ** 2 / ((value - center) ** 2 + width ** 2)) + constant + noise / 1000 * gaussianRandom(0, 1));
 }
 
 // Multi-peak Lorentzian function
-export function multiPeakLorentzian(x, amplitudes, centers, widths, constant = 1) {
+export function multiPeakLorentzian(x, amplitudes, centers, widths, noise = 0, constant = 1) {
     // Create an array of ones with the same length as x, multiplied by the constant
     let result = x.map(() => constant);
 
     // Add each Lorentzian peak to the result
     amplitudes.forEach((amplitude, i) => {
-        const center = centers[i];
+        const center = centers[i] + noise / 1000 * gaussianRandom(0, 1); // Add noise to the center
         const width = widths[i];
-        const singlePeak = singlePeakLorentzian(x, amplitude, center, width, 0);
+        const singlePeak = singlePeakLorentzian(x, amplitude, center, width, noise, 0);
         result = result.map((value, index) => value + singlePeak[index]);
     });
 
@@ -50,4 +50,13 @@ export function computeCenters(magneticFieldStrength, x, y, z) {
     const centers = doubledProjectionFactors.map(factor => zeroFieldSplitting + factor * energyShift);
 
     return centers;
+}
+
+// Standard Normal variate using Box-Muller transform.
+function gaussianRandom(mean = 0, stdev = 1) {
+    const u = 1 - Math.random(); // Converting [0,1) to (0,1]
+    const v = Math.random();
+    const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+    // Transform to the desired mean and standard deviation:
+    return z * stdev + mean;
 }
