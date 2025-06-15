@@ -10,12 +10,18 @@ const widths = [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01]; // Widths for t
 const x = linspace(zeroFieldSplitting - 0.3, zeroFieldSplitting + 0.3, 1000);
 
 // Function to update the plot based on new inputs
-function updatePlot(sliderValue, xValue = 1, yValue = 1, zValue = 1) {
-    // Recalculate centers based on the slider value
-    const centers = computeCenters(sliderValue, xValue, yValue, zValue);
+function updatePlot(sliderValue, xValue = 1, yValue = 1, zValue = 1, useAllAxes = false) {
 
-    // Recalculate Lorentzian values using the slider value
-    const updatedY = multiPeakLorentzian(x, amps, centers, widths);
+    let centers
+    let updatedY;
+
+    if (useAllAxes) {
+        centers = computeCenters(sliderValue, xValue, yValue, zValue);
+        updatedY = multiPeakLorentzian(x, amps, centers, widths);
+    } else {
+        centers = computeCenters(sliderValue, 1, 1, 1);
+        updatedY = multiPeakLorentzian(x, amps.slice(0, 2), centers.slice(0, 2), widths.slice(0, 2));
+    }
 
     // Combine x and updated y into a new data array
     const updatedData = x.map((xi, i) => ({ x: xi, y: updatedY[i] }));
@@ -57,7 +63,7 @@ const updatePlotWithInputs = () => {
     const zValue = parseFloat(zInput.value);
     const useAllAxes = toggleSwitch.checked;
     console.log("updated plot");
-    updatePlot(sliderValue, xValue, yValue, zValue);
+    updatePlot(sliderValue, xValue, yValue, zValue, useAllAxes);
 };
 
 
