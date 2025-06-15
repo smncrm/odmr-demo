@@ -6,8 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NV ODMR Demo</title>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="stylesheet" href="style.css">
+    <script src="utils.js"></script>
 </head>
 
 <body>
@@ -18,19 +18,27 @@
     <div class="input-container">
         <div class="row">
             <div class="columnleft">
-                <label for="slider">Magnetic field strength</label>
+                <label for="slider">Magnetic field strength (mT)</label>
             </div>
             <div class="columnright">
-                <input type="range" id="slider" min="0" max="10" step="0.01" value="5.00" style="width: 180px;">
-                <span id="slider-value" style="float: right;">5.00 mT</span>
+                <input type="range" id="slider" min="0" max="10" step="0.01" value="0.00" style="width: 180px;">
+
+                <input type="number" id="manual-input" min="0" max="10" step="0.01" value="0.00" style="width: 50px; float: right; margin-left: 10px;" oninput=enforceMinMax(this);>
             </div>
         </div>
         <script>
             const slider = document.getElementById('slider');
-            const sliderValue = document.getElementById('slider-value');
+            const manualInput = document.getElementById('manual-input');
 
             slider.addEventListener('input', function() {
-                sliderValue.textContent = parseFloat(this.value).toFixed(2) + ' mT';
+                const value = parseFloat(this.value).toFixed(2);
+                manualInput.value = value; // Update manual input when slider changes
+            });
+
+            manualInput.addEventListener('input', function() {
+                const value = parseFloat(this.value).toFixed(2);
+                slider.value = value; // Update slider when manual input changes
+
             });
         </script>
 

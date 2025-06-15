@@ -51,6 +51,7 @@ function updatePlot(sliderValue, xValue = 1, yValue = 1, zValue = 1, useAllAxes 
 
 // Add event listeners to the slider and input fields
 const slider = document.getElementById("slider");
+const strengthInput = document.getElementById("manual-input");
 const xInput = document.getElementById("x-value");
 const yInput = document.getElementById("y-value");
 const zInput = document.getElementById("z-value");
@@ -67,7 +68,7 @@ const updatePlotWithInputs = () => {
 };
 
 
-[slider, xInput, yInput, zInput].forEach(input => {
+[slider, strengthInput, xInput, yInput, zInput].forEach(input => {
     input.addEventListener("input", updatePlotWithInputs);
 });
 
