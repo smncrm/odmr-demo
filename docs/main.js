@@ -3,8 +3,8 @@ import { linspace } from "./utils.js";
 import { multiPeakLorentzian, computeCenters, zeroFieldSplitting } from "./physics.js";
 
 // Parameters
-const amps = [-0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1]; // Amplitudes for the Lorentzian peaks
-const widths = [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01]; // Widths for the Lorentzian peaks
+const amps = Array(8).fill(-0.1); // Amplitudes for the Lorentzian peaks
+const widths = Array(8).fill(0.005); // Widths for the Lorentzian peaks
 
 // Generate x values
 const x = linspace(zeroFieldSplitting - 0.3, zeroFieldSplitting + 0.3, 1000);
