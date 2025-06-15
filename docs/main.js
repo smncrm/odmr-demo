@@ -48,19 +48,24 @@ const slider = document.getElementById("slider");
 const xInput = document.getElementById("x-value");
 const yInput = document.getElementById("y-value");
 const zInput = document.getElementById("z-value");
+const toggleSwitch = document.getElementById('toggle-switch');
 
 const updatePlotWithInputs = () => {
     const sliderValue = parseFloat(slider.value);
     const xValue = parseFloat(xInput.value);
     const yValue = parseFloat(yInput.value);
     const zValue = parseFloat(zInput.value);
+    const useAllAxes = toggleSwitch.checked;
+    console.log("updated plot");
     updatePlot(sliderValue, xValue, yValue, zValue);
 };
 
-slider.addEventListener("input", updatePlotWithInputs);
-[xInput, yInput, zInput].forEach(input => {
+
+[slider, xInput, yInput, zInput].forEach(input => {
     input.addEventListener("input", updatePlotWithInputs);
 });
+
+toggleSwitch.addEventListener('change', updatePlotWithInputs);
 
 // Initial plot rendering with default slider value
 updatePlot(parseFloat(slider.value));
