@@ -52,23 +52,26 @@ function updatePlot(sliderValue, xValue = 1, yValue = 1, zValue = 1, useAllAxes 
 // Add event listeners to the slider and input fields
 const sliderMag = document.getElementById("slider-mag");
 const manualInputMag = document.getElementById("manual-input-mag");
+const sliderNoise = document.getElementById("slider-noise");
+const manualInputNoise = document.getElementById("manual-input-noise");
 const xInput = document.getElementById("x-value");
 const yInput = document.getElementById("y-value");
 const zInput = document.getElementById("z-value");
 const toggleSwitch = document.getElementById('toggle-switch');
 
 const updatePlotWithInputs = () => {
-    const sliderValue = parseFloat(sliderMag.value);
+    const sliderMagValue = parseFloat(sliderMag.value);
+    const sliderNoiseValue = parseFloat(sliderNoise.value);
     const xValue = parseFloat(xInput.value);
     const yValue = parseFloat(yInput.value);
     const zValue = parseFloat(zInput.value);
     const useAllAxes = toggleSwitch.checked;
-    console.log("updated plot");
-    updatePlot(sliderValue, xValue, yValue, zValue, useAllAxes);
+    console.log("plot updated");
+    updatePlot(sliderMagValue, xValue, yValue, zValue, useAllAxes);
 };
 
 
-[sliderMag, manualInputMag, xInput, yInput, zInput].forEach(input => {
+[sliderMag, manualInputMag, sliderNoise, manualInputNoise, xInput, yInput, zInput].forEach(input => {
     input.addEventListener("input", updatePlotWithInputs);
 });
 
