@@ -62,7 +62,7 @@ function gaussianRandom(mean = 0, stdev = 1) {
 }
 
 // Function to compute the zero-field splitting energy levels based on the temperature in Kelvin
-export function zeroFieldSplitting(temp) {
+export function computeZeroFieldSplitting(temp) {
     // approximation taken from https://journals.aps.org/prx/abstract/10.1103/PhysRevX.2.031001
     t = temp - 300
     return 2.87 + 0.000097 * t - 0.00000037 * t ** 2 + 0.00000000017 * t ** 3
