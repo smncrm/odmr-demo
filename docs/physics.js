@@ -41,7 +41,7 @@ export function computeProjectionFactor(vector) {
 }
 
 // Function to update the centers based on the magnetic field strength (mT)
-export function computeCenters(magneticFieldStrength, x, y, z) {
+export function computeCenters(magneticFieldStrength, x = 1, y = 1, z = 1, zeroFieldSplitting = 2.87) {
     const mag_field_vector = [x, y, z];
     const projectionFactors = computeProjectionFactor(mag_field_vector);
 
