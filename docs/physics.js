@@ -1,5 +1,6 @@
+import { gaussianRandom } from './utils.js';
+
 // Parameters
-// const zeroFieldSplitting = 2.87; // GHz
 const gyromagneticRatio = 28.0; // GHz/T
 const nv_111 = [1, 1, 1];
 const nv_100 = [1, -1, -1];
