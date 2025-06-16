@@ -52,15 +52,6 @@ export function computeCenters(magneticFieldStrength, x = 1, y = 1, z = 1, zeroF
     return centers;
 }
 
-// Standard Normal variate using Box-Muller transform.
-function gaussianRandom(mean = 0, stdev = 1) {
-    const u = 1 - Math.random(); // Converting [0,1) to (0,1]
-    const v = Math.random();
-    const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
-    // Transform to the desired mean and standard deviation:
-    return z * stdev + mean;
-}
-
 // Function to compute the zero-field splitting energy levels based on the temperature in Kelvin
 export function computeZeroFieldSplitting(temp) {
     // approximation taken from https://journals.aps.org/prx/abstract/10.1103/PhysRevX.2.031001
