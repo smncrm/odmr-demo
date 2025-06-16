@@ -1,4 +1,4 @@
-import { multiPeakLorentzian, computeProjectionFactor, computeCenters } from '../docs/physics.js';
+import { multiPeakLorentzian, computeProjectionFactor, computeCenters, zeroFieldSplitting } from '../docs/physics.js';
 import { linspace } from '../docs/utils.js';
 
 describe('multiPeakLorentzian', () => {
@@ -49,4 +49,10 @@ describe('computeCenters', () => {
         expect(centers[6]).toBeCloseTo(2.87 + (28 * 0.333 * magneticFieldStrength / 1000), 3);
         expect(centers[7]).toBeCloseTo(2.87 - (28 * 0.333 * magneticFieldStrength / 1000), 3);
     })
+})
+
+describe('zeroFieldSplitting', () => {
+    it('should return 2.87 at room temperature (300K)', () => {
+        expect(zeroFieldSplitting(300)).toBeCloseTo(2.87, 2); // Check if it's approximately 2.87 GHz
+    });
 })
