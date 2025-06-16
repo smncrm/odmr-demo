@@ -54,8 +54,7 @@ export function computeCenters(magneticFieldStrength, x = 1, y = 1, z = 1, zeroF
 }
 
 // Function to compute the zero-field splitting energy levels based on the temperature in Kelvin
-export function computeZeroFieldSplitting(temp) {
+export function computeZeroFieldSplitting(t) {
     // approximation taken from https://journals.aps.org/prx/abstract/10.1103/PhysRevX.2.031001
-    t = temp - 300
-    return 2.87 + 0.000097 * t - 0.00000037 * t ** 2 + 0.00000000017 * t ** 3
+    return 2.8697 + 0.000097 * t - 0.00000037 * t ** 2 + 0.00000000017 * t ** 3
 }
