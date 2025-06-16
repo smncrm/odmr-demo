@@ -54,6 +54,8 @@ const sliderMag = document.getElementById("slider-mag");
 const manualInputMag = document.getElementById("manual-input-mag");
 const sliderNoise = document.getElementById("slider-noise");
 const manualInputNoise = document.getElementById("manual-input-noise");
+const sliderTemp = document.getElementById("slider-temp");
+const manualInputTemp = document.getElementById("manual-input-temp");
 const xInput = document.getElementById("x-value");
 const yInput = document.getElementById("y-value");
 const zInput = document.getElementById("z-value");
@@ -62,6 +64,7 @@ const toggleSwitch = document.getElementById('toggle-switch');
 const updatePlotWithInputs = () => {
     const sliderMagValue = parseFloat(sliderMag.value);
     const sliderNoiseValue = parseFloat(sliderNoise.value);
+    const sliderNoiseTemp = parseFloat(sliderTemp.value);
     const xValue = parseFloat(xInput.value);
     const yValue = parseFloat(yInput.value);
     const zValue = parseFloat(zInput.value);
@@ -71,7 +74,7 @@ const updatePlotWithInputs = () => {
 };
 
 
-[sliderMag, manualInputMag, sliderNoise, manualInputNoise, xInput, yInput, zInput].forEach(input => {
+[sliderMag, manualInputMag, sliderNoise, manualInputNoise, sliderTemp, manualInputTemp, xInput, yInput, zInput].forEach(input => {
     input.addEventListener("input", updatePlotWithInputs);
 });
 
