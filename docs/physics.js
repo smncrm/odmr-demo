@@ -58,3 +58,28 @@ export function computeZeroFieldSplitting(t) {
     // approximation taken from https://journals.aps.org/prx/abstract/10.1103/PhysRevX.2.031001
     return 2.8697 + 0.000097 * t - 0.00000037 * t ** 2 + 0.00000000017 * t ** 3
 }
+
+// function to compute the eigenvalues of the effective Hamiltonian without hyperfine splitting
+function computeEigValuesHamil(b, theta, D) {
+    const B = gyromagneticRatio * b;
+    const p = -(1 / 3 * Math.pow(D, 2) + Math.pow(B, 2));
+    const q = -1 / 2 * D * Math.pow(B, 2) * Math.cos(2 * theta) - 1 / 6 * D * Math.pow(B, 2) + 2 / 27 * Math.pow(D, 3);
+    const l0 = (2 / Math.sqrt(3)) * Math.sqrt(-p) * Math.cos(
+        (1 / 3) * Math.acos((3 * Math.sqrt(3) * q) / (2 * Math.sqrt(Math.pow(-p, 3))))
+    );
+    const l1 = (2 / Math.sqrt(3)) * Math.sqrt(-p) * Math.cos(
+        (1 / 3) * Math.acos((3 * Math.sqrt(3) * q) / (2 * Math.sqrt(Math.pow(-p, 3)))) - (2 * Math.PI) / 3
+    );
+    const l2 = (2 / Math.sqrt(3)) * Math.sqrt(-p) * Math.cos(
+        (1 / 3) * Math.acos((3 * Math.sqrt(3) * q) / (2 * Math.sqrt(Math.pow(-p, 3)))) - (4 * Math.PI) / 3
+    );
+    return [l0, l1, l2];
+}
+
+// Function to compute the ESR frequencies based on the magnetic field strength, angle, and zero-field splitting
+export function computeESRFrequencies(magneticFieldStrength, theta, zeroFieldSplitting = 2.87) {
+    const eigValues = computeEigValuesHamil(magneticFieldStrength, theta, zeroFieldSplitting);
+    return [eigValues[0] - eigValues[1],
+        eigValues[0] - eigValues[2]
+    ];
+}
