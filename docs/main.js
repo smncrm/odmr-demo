@@ -70,7 +70,6 @@ const updatePlotWithInputs = () => {
     const yValue = parseFloat(yInput.value);
     const zValue = parseFloat(zInput.value);
     const useAllAxes = toggleSwitch.checked;
-    console.log("plot updated");
     updatePlot(sliderMagValue, sliderTempValue, sliderNoiseValue, xValue, yValue, zValue, useAllAxes);
 };
 

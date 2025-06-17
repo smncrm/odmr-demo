@@ -24,3 +24,18 @@ export function gaussianRandom(mean = 0, stdev = 1) {
     // Transform to the desired mean and standard deviation:
     return z * stdev + mean;
 }
+
+// Function to compute the arccosine of a value with checking for float rounding errors
+export function arcos(value, precision = 6) {
+    if (value > 1 && value <= 1 + Math.pow(10, -precision)) {
+        value = 1;
+    }
+    if (value < -1 && value >= -1 - Math.pow(10, -precision)) {
+        value = -1;
+    }
+    // Ensure the value is within the valid range for acos
+    if (value < -1 || value > 1) {
+        throw new RangeError("Value must be in the range [-1, 1]");
+    }
+    return Math.acos(value);
+}

@@ -12,17 +12,6 @@ describe('multiPeakLorentzian', () => {
     });
 });
 
-describe('computeProjectionFactor', () => {
-    it('should compute projection factors for a given vector', () => {
-        const vector = [1, 1, 1]; // Example vector
-        const expectedFactors = [1, 0.333, 0.333, 0.333]; // Expected projection factors (approx)
-        const results = computeProjectionFactor(vector);
-        expect(results[0]).toBeCloseTo(expectedFactors[0], 3);
-        expect(results[1]).toBeCloseTo(expectedFactors[1], 3);
-        expect(results[2]).toBeCloseTo(expectedFactors[2], 3);
-        expect(results[3]).toBeCloseTo(expectedFactors[3], 3);
-    });
-});
 
 describe('computeCenters', () => {
     it('should give 8 values for centers', () => {
@@ -40,14 +29,14 @@ describe('computeCenters', () => {
         const y = 1; // Example y component of the magnetic field vector
         const z = 1; // Example z component of the magnetic field vector
         const centers = computeCenters(magneticFieldStrength, x, y, z);
-        expect(centers[0]).toBeCloseTo(2.87 + (28 * magneticFieldStrength / 1000), 3); // Check first center
-        expect(centers[1]).toBeCloseTo(2.87 - (28 * magneticFieldStrength / 1000), 3); // Check second center
-        expect(centers[2]).toBeCloseTo(2.87 + (28 * 0.333 * magneticFieldStrength / 1000), 3);
-        expect(centers[3]).toBeCloseTo(2.87 - (28 * 0.333 * magneticFieldStrength / 1000), 3);
-        expect(centers[4]).toBeCloseTo(2.87 + (28 * 0.333 * magneticFieldStrength / 1000), 3);
-        expect(centers[5]).toBeCloseTo(2.87 - (28 * 0.333 * magneticFieldStrength / 1000), 3);
-        expect(centers[6]).toBeCloseTo(2.87 + (28 * 0.333 * magneticFieldStrength / 1000), 3);
-        expect(centers[7]).toBeCloseTo(2.87 - (28 * 0.333 * magneticFieldStrength / 1000), 3);
+        expect(centers[0]).toBeCloseTo(2.73, 3); // Check first center
+        expect(centers[1]).toBeCloseTo(3.01, 3); // Check second center
+        expect(centers[2]).toBeCloseTo(2.832, 3);
+        expect(centers[3]).toBeCloseTo(2.926, 3);
+        expect(centers[4]).toBeCloseTo(2.832, 3);
+        expect(centers[5]).toBeCloseTo(2.926, 3);
+        expect(centers[6]).toBeCloseTo(2.832, 3);
+        expect(centers[7]).toBeCloseTo(2.926, 3);
     })
 })
 

@@ -1,4 +1,4 @@
-import { gaussianRandom } from './utils.js';
+import { gaussianRandom, arcos } from './utils.js';
 
 // Parameters
 const gyromagneticRatio = 28.0; // GHz/T
@@ -32,24 +32,25 @@ export function multiPeakLorentzian(x, amplitudes, centers, widths, noise = 0, c
 
 // Function to compute the factor for projecting onto the NV axes, 
 // i.e. the cosine of the angle between the magnetic field vector and the NV axes
-export function computeProjectionFactor(vector) {
+export function computeAngles(vector) {
     const normalizedInnerProducts = nv_axes.map(axis => {
         const dotProduct = vector.reduce((sum, value, index) => sum + value * axis[index], 0);
         const norm = Math.sqrt(vector.reduce((sum, value) => sum + value ** 2, 0));
         return dotProduct / norm / Math.sqrt(3); // Normalize by the length of the vector and the NV axis (which is always sqrt(3))
     });
-    return normalizedInnerProducts.map(Math.abs);
+    return normalizedInnerProducts.map(arcos)
 }
 
-// Function to update the centers based on the magnetic field strength (mT)
+// Function to update the centers based on the magnetic field strength (mT) and orientation
 export function computeCenters(magneticFieldStrength, x = 1, y = 1, z = 1, zeroFieldSplitting = 2.87) {
     const mag_field_vector = [x, y, z];
-    const projectionFactors = computeProjectionFactor(mag_field_vector);
+    const angles = computeAngles(mag_field_vector);
 
-    const doubledProjectionFactors = projectionFactors.flatMap(factor => [factor, -factor]);
-    const energyShift = gyromagneticRatio * magneticFieldStrength / 1000;
-    const centers = doubledProjectionFactors.map(factor => zeroFieldSplitting + factor * energyShift);
-
+    let centers = [];
+    angles.forEach(angle => {
+        const frequencies = computeESRFrequencies(magneticFieldStrength / 1000, angle, zeroFieldSplitting);
+        centers = centers.concat(frequencies);
+    });
     return centers;
 }
 
@@ -65,13 +66,13 @@ function computeEigValuesHamil(b, theta, D) {
     const p = -(1 / 3 * Math.pow(D, 2) + Math.pow(B, 2));
     const q = -1 / 2 * D * Math.pow(B, 2) * Math.cos(2 * theta) - 1 / 6 * D * Math.pow(B, 2) + 2 / 27 * Math.pow(D, 3);
     const l0 = (2 / Math.sqrt(3)) * Math.sqrt(-p) * Math.cos(
-        (1 / 3) * Math.acos((3 * Math.sqrt(3) * q) / (2 * Math.sqrt(Math.pow(-p, 3))))
+        (1 / 3) * arcos((3 * Math.sqrt(3) * q) / (2 * Math.sqrt(Math.pow(-p, 3))))
     );
     const l1 = (2 / Math.sqrt(3)) * Math.sqrt(-p) * Math.cos(
-        (1 / 3) * Math.acos((3 * Math.sqrt(3) * q) / (2 * Math.sqrt(Math.pow(-p, 3)))) - (2 * Math.PI) / 3
+        (1 / 3) * arcos((3 * Math.sqrt(3) * q) / (2 * Math.sqrt(Math.pow(-p, 3)))) - (2 * Math.PI) / 3
     );
     const l2 = (2 / Math.sqrt(3)) * Math.sqrt(-p) * Math.cos(
-        (1 / 3) * Math.acos((3 * Math.sqrt(3) * q) / (2 * Math.sqrt(Math.pow(-p, 3)))) - (4 * Math.PI) / 3
+        (1 / 3) * arcos((3 * Math.sqrt(3) * q) / (2 * Math.sqrt(Math.pow(-p, 3)))) - (4 * Math.PI) / 3
     );
     return [l0, l1, l2];
 }
