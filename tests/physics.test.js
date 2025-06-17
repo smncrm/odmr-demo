@@ -1,4 +1,4 @@
-import { multiPeakLorentzian, computeProjectionFactor, computeCenters, computeZeroFieldSplitting } from '../docs/physics.js';
+import { multiPeakLorentzian, computeProjectionFactor, computeCenters, computeZeroFieldSplitting, computeESRFrequencies } from '../docs/physics.js';
 import { linspace } from '../docs/utils.js';
 
 describe('multiPeakLorentzian', () => {
@@ -54,5 +54,31 @@ describe('computeCenters', () => {
 describe('computeZeroFieldSplitting', () => {
     it('should return 2.87 at room temperature (300K)', () => {
         expect(computeZeroFieldSplitting(300)).toBeCloseTo(2.87, 2); // Check if it's approximately 2.87 GHz
+    });
+})
+
+describe('computeESRFrequencies', () => {
+    it('should return D for when given 0 magnetic field', () => {
+        const b = 0; // Magnetic field strength
+        const theta = 0; // Angle
+        const D = 2.87; // Zero-field splitting
+        expect(computeESRFrequencies(b, theta, D)[0]).toBeCloseTo(D, 3);
+        expect(computeESRFrequencies(b, theta, D)[1]).toBeCloseTo(D, 3);
+    });
+
+    it('should work for when given 0.01 magnetic field and 0 angle', () => {
+        const b = 0.01; // Magnetic field strength
+        const theta = 0; // Angle
+        const D = 2.87; // Zero-field splitting
+        expect(computeESRFrequencies(b, theta, D)[0]).toBeCloseTo(2.59, 3);
+        expect(computeESRFrequencies(b, theta, D)[1]).toBeCloseTo(3.15, 3);
+    });
+
+    it('should work for when given 0.02 magnetic field and pi/4 angle', () => {
+        const b = 0.02; // Magnetic field strength
+        const theta = Math.PI / 4; // Angle
+        const D = 2.87; // Zero-field splitting
+        expect(computeESRFrequencies(b, theta, D)[0]).toBeCloseTo(2.5587, 3);
+        expect(computeESRFrequencies(b, theta, D)[1]).toBeCloseTo(3.3451, 3);
     });
 })
