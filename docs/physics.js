@@ -101,5 +101,5 @@ export function computeAmplitudes(centers) {
 // Function to compute the linewidths based on the centers
 export function computeLinewidths(centers) {
     // For simplicity, assume a constant linewidth
-    return centers.map(() => 0.005);
+    return centers.map(() => 0.001);
 }
