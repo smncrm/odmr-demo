@@ -6,7 +6,7 @@ import { multiPeakLorentzian, computeCenters, computeZeroFieldSplitting, compute
 const x = linspace(2.87 - 0.3, 2.87 + 0.3, 1000);
 
 // Function to update the plot based on new inputs
-function updatePlot(sliderValue, temp = 300, noise = 0, xValue = 1, yValue = 1, zValue = 1, useAllAxes = false) {
+function updatePlot(sliderValue, temp = 300, noise = 0, xValue = 1, yValue = 1, zValue = 1, useAllAxes = false, hyperfine = false) {
 
     let centers
     let amps
@@ -15,9 +15,13 @@ function updatePlot(sliderValue, temp = 300, noise = 0, xValue = 1, yValue = 1, 
     let zeroFieldSplitting = computeZeroFieldSplitting(temp);
 
     if (useAllAxes) {
-        centers = computeCenters(sliderValue, xValue, yValue, zValue, zeroFieldSplitting);
+        centers = computeCenters(sliderValue, xValue, yValue, zValue, zeroFieldSplitting, hyperfine);
     } else {
-        centers = computeCenters(sliderValue, 1, 1, 1, zeroFieldSplitting).slice(0, 2); // Only take the first two centers for a single NV axis
+        if (hyperfine) {
+            centers = computeCenters(sliderValue, xValue, yValue, zValue, zeroFieldSplitting, hyperfine).slice(0, 6);
+        } else {
+            centers = computeCenters(sliderValue, 1, 1, 1, zeroFieldSplitting, hyperfine).slice(0, 2);
+        }
     }
 
     amps = computeAmplitudes(centers)
@@ -72,7 +76,7 @@ const updatePlotWithInputs = () => {
     const zValue = parseFloat(zInput.value);
     const useAllAxes = toggleAllAxes.checked;
     const hyperfine = toggleHyperfine.checked;
-    updatePlot(sliderMagValue, sliderTempValue, sliderNoiseValue, xValue, yValue, zValue, useAllAxes);
+    updatePlot(sliderMagValue, sliderTempValue, sliderNoiseValue, xValue, yValue, zValue, useAllAxes, hyperfine);
 };
 
 
