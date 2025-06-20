@@ -1,9 +1,6 @@
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
 import { linspace } from "./utils.js";
-import { multiPeakLorentzian, computeCenters, computeZeroFieldSplitting, computeAmplitudes } from "./physics.js";
-
-// Parameters
-const widths = Array(8).fill(0.005); // Widths for the Lorentzian peaks
+import { multiPeakLorentzian, computeCenters, computeZeroFieldSplitting, computeAmplitudes, computeLinewidths } from "./physics.js";
 
 // Generate x values
 const x = linspace(2.87 - 0.3, 2.87 + 0.3, 1000);
@@ -13,19 +10,19 @@ function updatePlot(sliderValue, temp = 300, noise = 0, xValue = 1, yValue = 1, 
 
     let centers
     let amps
+    let widths
     let updatedY;
     let zeroFieldSplitting = computeZeroFieldSplitting(temp);
 
     if (useAllAxes) {
         centers = computeCenters(sliderValue, xValue, yValue, zValue, zeroFieldSplitting);
-        amps = computeAmplitudes(centers)
-        updatedY = multiPeakLorentzian(x, amps, centers, widths, noise);
     } else {
-        centers = computeCenters(sliderValue, 1, 1, 1, zeroFieldSplitting);
-        amps = computeAmplitudes(centers.slice(0, 2));
-        console.log(centers.slice(0, 2), amps.slice(0, 2));
-        updatedY = multiPeakLorentzian(x, amps, centers.slice(0, 2), widths.slice(0, 2), noise);
+        centers = computeCenters(sliderValue, 1, 1, 1, zeroFieldSplitting).slice(0, 2); // Only take the first two centers for a single NV axis
     }
+
+    amps = computeAmplitudes(centers)
+    widths = computeLinewidths(centers);
+    updatedY = multiPeakLorentzian(x, amps, centers, widths, noise);
 
     // Combine x and updated y into a new data array
     const updatedData = x.map((xi, i) => ({ x: xi, y: updatedY[i] }));
