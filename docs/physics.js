@@ -53,7 +53,8 @@ export function computeCenters(magneticFieldStrength, x = 1, y = 1, z = 1, zeroF
         centers = centers.concat(frequencies);
     });
     if (hyperfine) {
-        centers = centers.concat(centers.map(center => center + hyperfineSplitting)).concat(centers.map(center => center - hyperfineSplitting));
+        centers = centers.map(center => [center - hyperfineSplitting, center, center + hyperfineSplitting]);
+        centers = centers.flat();
     }
 
     return centers;
