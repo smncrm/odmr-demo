@@ -108,11 +108,11 @@
 
         <div class="row">
             <div class="columnleft">
-                <label for="toggle-switch">Use all NV axes:</label>
+                <label for="toggle-all-axes">Use all NV axes:</label>
             </div>
             <div class="columnright">
                 <label class="switch" style="float: right;">
-                <input type="checkbox" id="toggle-switch">
+                <input type="checkbox" id="toggle-all-axes">
                 <span class="slider"></span>
             </label>
             </div>
@@ -140,9 +140,9 @@
             </div>
         </div>
         <script>
-            const toggleSwitch = document.getElementById('toggle-switch');
+            const toggleAllAxes = document.getElementById('toggle-all-axes');
             const orientationRow = document.getElementById('orientation-row');
-            toggleSwitch.addEventListener('change', function() {
+            toggleAllAxes.addEventListener('change', function() {
                 orientationRow.style.display = this.checked ? 'block' : 'none';
             });
         </script>

@@ -60,7 +60,7 @@ const manualInputTemp = document.getElementById("manual-input-temp");
 const xInput = document.getElementById("x-value");
 const yInput = document.getElementById("y-value");
 const zInput = document.getElementById("z-value");
-const toggleSwitch = document.getElementById('toggle-switch');
+const toggleAllAxes = document.getElementById('toggle-all-axes');
 
 const updatePlotWithInputs = () => {
     const sliderMagValue = parseFloat(sliderMag.value);
@@ -69,7 +69,7 @@ const updatePlotWithInputs = () => {
     const xValue = parseFloat(xInput.value);
     const yValue = parseFloat(yInput.value);
     const zValue = parseFloat(zInput.value);
-    const useAllAxes = toggleSwitch.checked;
+    const useAllAxes = toggleAllAxes.checked;
     updatePlot(sliderMagValue, sliderTempValue, sliderNoiseValue, xValue, yValue, zValue, useAllAxes);
 };
 
@@ -78,7 +78,7 @@ const updatePlotWithInputs = () => {
     input.addEventListener("input", updatePlotWithInputs);
 });
 
-toggleSwitch.addEventListener('change', updatePlotWithInputs);
+toggleAllAxes.addEventListener('change', updatePlotWithInputs);
 
 // Initial plot rendering with default slider value
 updatePlot(parseFloat(sliderMag.value));
