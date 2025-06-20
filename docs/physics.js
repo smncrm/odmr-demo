@@ -84,3 +84,10 @@ export function computeESRFrequencies(magneticFieldStrength, theta, zeroFieldSpl
         eigValues[0] - eigValues[2]
     ];
 }
+
+// Function to compute the amplitudes based on the centers
+export function computeAmplitudes(centers) {
+    // For simplicity, assume the same amplitude for all centers
+    // To be modified in the future.
+    return centers.map(() => 1 / centers.length); // Return an array of ones with the same length as centers
+}

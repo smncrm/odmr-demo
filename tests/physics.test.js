@@ -1,4 +1,4 @@
-import { multiPeakLorentzian, computeProjectionFactor, computeCenters, computeZeroFieldSplitting, computeESRFrequencies } from '../docs/physics.js';
+import { multiPeakLorentzian, computeProjectionFactor, computeCenters, computeZeroFieldSplitting, computeESRFrequencies, computeAmplitudes } from '../docs/physics.js';
 import { linspace } from '../docs/utils.js';
 
 describe('multiPeakLorentzian', () => {
@@ -69,5 +69,12 @@ describe('computeESRFrequencies', () => {
         const D = 2.87; // Zero-field splitting
         expect(computeESRFrequencies(b, theta, D)[0]).toBeCloseTo(2.5587, 3);
         expect(computeESRFrequencies(b, theta, D)[1]).toBeCloseTo(3.3451, 3);
+    });
+})
+
+describe('computeAmplitudes', () => {
+    it('should return an array of the correct length', () => {
+        const centers = Array(8).fill(0);
+        expect(computeAmplitudes(centers)).toHaveLength(centers.length);
     });
 })
