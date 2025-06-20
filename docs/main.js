@@ -1,9 +1,8 @@
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
 import { linspace } from "./utils.js";
-import { multiPeakLorentzian, computeCenters, computeZeroFieldSplitting } from "./physics.js";
+import { multiPeakLorentzian, computeCenters, computeZeroFieldSplitting, computeAmplitudes } from "./physics.js";
 
 // Parameters
-const amps = Array(8).fill(-0.1); // Amplitudes for the Lorentzian peaks
 const widths = Array(8).fill(0.005); // Widths for the Lorentzian peaks
 
 // Generate x values
@@ -13,15 +12,19 @@ const x = linspace(2.87 - 0.3, 2.87 + 0.3, 1000);
 function updatePlot(sliderValue, temp = 300, noise = 0, xValue = 1, yValue = 1, zValue = 1, useAllAxes = false) {
 
     let centers
+    let amps
     let updatedY;
     let zeroFieldSplitting = computeZeroFieldSplitting(temp);
 
     if (useAllAxes) {
         centers = computeCenters(sliderValue, xValue, yValue, zValue, zeroFieldSplitting);
+        amps = computeAmplitudes(centers)
         updatedY = multiPeakLorentzian(x, amps, centers, widths, noise);
     } else {
         centers = computeCenters(sliderValue, 1, 1, 1, zeroFieldSplitting);
-        updatedY = multiPeakLorentzian(x, amps.slice(0, 2), centers.slice(0, 2), widths.slice(0, 2), noise);
+        amps = computeAmplitudes(centers.slice(0, 2));
+        console.log(centers.slice(0, 2), amps.slice(0, 2));
+        updatedY = multiPeakLorentzian(x, amps, centers.slice(0, 2), widths.slice(0, 2), noise);
     }
 
     // Combine x and updated y into a new data array
