@@ -7,6 +7,7 @@ const nv_100 = [1, -1, -1];
 const nv_010 = [-1, 1, -1];
 const nv_001 = [-1, -1, 1];
 const nv_axes = [nv_111, nv_100, nv_010, nv_001];
+const hyperfineSplitting = 0.0022; // GHz, hyperfine splitting based on Nitrogen nuclei
 
 // Single peak Lorentzian function
 function singlePeakLorentzian(x, amplitude, center, width, noise = 0, constant = 1) {
@@ -42,7 +43,7 @@ export function computeAngles(vector) {
 }
 
 // Function to update the centers based on the magnetic field strength (mT) and orientation
-export function computeCenters(magneticFieldStrength, x = 1, y = 1, z = 1, zeroFieldSplitting = 2.87) {
+export function computeCenters(magneticFieldStrength, x = 1, y = 1, z = 1, zeroFieldSplitting = 2.87, hyperfine = false) {
     const mag_field_vector = [x, y, z];
     const angles = computeAngles(mag_field_vector);
 
@@ -51,6 +52,10 @@ export function computeCenters(magneticFieldStrength, x = 1, y = 1, z = 1, zeroF
         const frequencies = computeESRFrequencies(magneticFieldStrength / 1000, angle, zeroFieldSplitting);
         centers = centers.concat(frequencies);
     });
+    if (hyperfine) {
+        centers = centers.concat(centers.map(center => center + hyperfineSplitting)).concat(centers.map(center => center - hyperfineSplitting));
+    }
+
     return centers;
 }
 

@@ -14,13 +14,22 @@ describe('multiPeakLorentzian', () => {
 
 
 describe('computeCenters', () => {
-    it('should give 8 values for centers', () => {
+    it('should give 8 values', () => {
         const magneticFieldStrength = 5; // Example value in mT
         const x = 1; // Example x component of the magnetic field vector
         const y = 1; // Example y component of the magnetic field vector
         const z = 1; // Example z component of the magnetic field vector
         const centers = computeCenters(magneticFieldStrength, x, y, z);
         expect(centers).toHaveLength(8); // Should return 2 centers for each NV axis
+    });
+
+    it('should give 24 values when using hyperfine splitting', () => {
+        const magneticFieldStrength = 5; // Example value in mT
+        const x = 1; // Example x component of the magnetic field vector
+        const y = 1; // Example y component of the magnetic field vector
+        const z = 1; // Example z component of the magnetic field vector
+        const centers = computeCenters(magneticFieldStrength, x, y, z, undefined, true);
+        expect(centers).toHaveLength(24); // Should return 6 centers for each NV axis
     });
 
     it('should compute centers based on magnetic field strength', () => {
