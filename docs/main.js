@@ -40,7 +40,8 @@ function updatePlot(sliderValue, temp = 300, noise = 0, xValue = 1, yValue = 1, 
         y: {
             label: "Fluorescence (normalised)",
             grid: true,
-            domain: [0.4, 1],
+            // round to first decimal, but use slightly smaller number, hence the division
+            domain: [Math.round(Math.min.apply(null, updatedY) * 10) / 10.5, 1],
         },
         marks: [
             Plot.line(updatedData, { x: "x", y: "y", stroke: "steelblue" })
