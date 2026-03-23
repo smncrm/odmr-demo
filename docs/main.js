@@ -13,6 +13,7 @@ function updatePlot(sliderValue, temp = 300, noise = 0, xValue = 1, yValue = 1, 
     let widths
     let updatedY;
     let zeroFieldSplitting = computeZeroFieldSplitting(temp);
+    let domainLowerLimit
 
     if (useAllAxes) {
         centers = computeCenters(sliderValue, xValue, yValue, zValue, zeroFieldSplitting, hyperfine);
@@ -32,6 +33,11 @@ function updatePlot(sliderValue, temp = 300, noise = 0, xValue = 1, yValue = 1, 
     const updatedData = x.map((xi, i) => ({ x: xi, y: updatedY[i] }));
 
     // Create a new plot
+    if (useAllAxes) {
+        domainLowerLimit = 0.7
+    } else {
+        domainLowerLimit = 0.6
+    }
     const updatedPlot = Plot.plot({
         x: {
             label: "Frequency (GHz)",
@@ -41,7 +47,7 @@ function updatePlot(sliderValue, temp = 300, noise = 0, xValue = 1, yValue = 1, 
             label: "Fluorescence (normalised)",
             grid: true,
             // round to first decimal, but use slightly smaller number, hence the division
-            domain: [Math.round(Math.min.apply(null, updatedY) * 10) / 10.5, 1],
+            domain: [domainLowerLimit, 1],
         },
         marks: [
             Plot.line(updatedData, { x: "x", y: "y", stroke: "steelblue" })
