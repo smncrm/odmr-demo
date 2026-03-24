@@ -33,11 +33,7 @@ function updatePlot(sliderValue, temp = 300, noise = 0, xValue = 1, yValue = 1, 
     const updatedData = x.map((xi, i) => ({ x: xi, y: updatedY[i] }));
 
     // Create a new plot
-    if (useAllAxes) {
-        domainLowerLimit = 0.7
-    } else {
-        domainLowerLimit = 0.6
-    }
+    domainLowerLimit = (useAllAxes) ? 0.7 : 0.6
     const updatedPlot = Plot.plot({
         x: {
             label: "Frequency (GHz)",
