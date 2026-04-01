@@ -1,9 +1,31 @@
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
 import { linspace } from "./utils.js";
-import { multiPeakLorentzian, computeCenters, computeZeroFieldSplitting, computeAmplitudes, computeLinewidths } from "./physics.js";
+import { multiPeakLorentzian, computeCenters, computeCentersDict, computeZeroFieldSplitting, computeAmplitudes, computeLinewidths } from "./physics.js";
 
 // Generate x values
 const x = linspace(2.87 - 0.3, 2.87 + 0.3, 1000);
+var nv_dict = {
+    nv_111: {
+        mag_angle: 0,
+        ESR_centers: [0],
+        plot: [0],
+        },
+    nv_100: {
+        mag_angle: 0,
+        ESR_centers: [0],
+        plot: [0],
+        },
+    nv_010: {
+        mag_angle: 0,
+        ESR_centers: [0],
+        plot: [0],
+        },
+    nv_001: {
+        mag_angle: 0,
+        ESR_centers: [0],
+        plot: [0],
+        },
+}
 
 // Function to update the plot based on new inputs
 function updatePlot(sliderValue, temp = 300, noise = 0, xValue = 1, yValue = 1, zValue = 1, useAllAxes = false, hyperfine = false) {
@@ -14,6 +36,10 @@ function updatePlot(sliderValue, temp = 300, noise = 0, xValue = 1, yValue = 1, 
     let updatedY;
     let zeroFieldSplitting = computeZeroFieldSplitting(temp);
     let domainLowerLimit
+
+    console.log(nv_dict)
+    computeCentersDict(nv_dict, sliderValue, xValue, yValue, zValue, zeroFieldSplitting, hyperfine);
+    console.log(nv_dict)
 
     if (useAllAxes) {
         centers = computeCenters(sliderValue, xValue, yValue, zValue, zeroFieldSplitting, hyperfine);

@@ -61,6 +61,31 @@ export function computeCenters(magneticFieldStrength, x = 1, y = 1, z = 1, zeroF
     return centers;
 }
 
+// Function to update the centers based on the magnetic field strength (mT) and orientation
+export function computeCentersDict(nv_dict, magneticFieldStrength, x = 1, y = 1, z = 1, zeroFieldSplitting = 2.87, hyperfine = false) {
+    const mag_field_vector = [x, y, z];
+    const angles = computeAngles(mag_field_vector);
+    let centers = [];
+    angles.forEach(angle => {
+        const frequencies = computeESRFrequencies(magneticFieldStrength / 1000, angle, zeroFieldSplitting);
+        centers = centers.concat(frequencies);
+    });
+    if (hyperfine) {
+        centers = centers.map(center => [center - hyperfineSplitting, center, center + hyperfineSplitting]);
+        centers = centers.flat();
+    }
+    
+    let numCentersPerAxis = (hyperfine) ? 6 : 2;
+
+    for (let index = 0; index < 4; index++) {
+        let axis = Object.keys(nv_dict)[index];
+        nv_dict[axis]['mag_angle'] = angles[index];
+        nv_dict[axis]['centers'] = centers.slice(index * numCentersPerAxis, (index+1)*numCentersPerAxis);
+    }
+    
+    return centers;
+}
+
 // Function to compute the zero-field splitting energy levels based on the temperature in Kelvin
 export function computeZeroFieldSplitting(t) {
     // approximation taken from https://journals.aps.org/prx/abstract/10.1103/PhysRevX.2.031001
