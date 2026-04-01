@@ -8,11 +8,12 @@ const nv_010 = [-1, 1, -1];
 const nv_001 = [-1, -1, 1];
 const nv_axes = [nv_111, nv_100, nv_010, nv_001];
 const hyperfineSplitting = 0.0022; // GHz, hyperfine splitting based on Nitrogen nuclei
+const linewidth = 0.007 
 
 // Single peak Lorentzian function
 function singlePeakLorentzian(x, amplitude, center, width, noise = 0, constant = 1) {
     // x is expected to be an array
-    return x.map(value => amplitude * (width ** 2 / ((value - center) ** 2 + width ** 2)) + constant + noise / 1000 * gaussianRandom(0, 1));
+    return x.map(value => amplitude/Math.PI * (width / ((value - center) ** 2 + (width ** 2))) + constant + noise / 1000 * gaussianRandom(0, 1));
 }
 
 // Multi-peak Lorentzian function
@@ -101,5 +102,5 @@ export function computeAmplitudes(centers) {
 // Function to compute the linewidths based on the centers
 export function computeLinewidths(centers) {
     // For simplicity, assume a constant linewidth
-    return centers.map(() => 0.001);
+    return centers.map(() => linewidth);
 }
