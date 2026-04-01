@@ -99,6 +99,16 @@ export function computeAmplitudes(centers) {
     return centers.map(() => -0.1);
 }
 
+// Function to compute the scaling factor of Lorentzians for ESR frequencies belonging to the same NV-axis
+export function computeScaling(esr_neg, esr_pos) {
+    // When adding two Lorentzians, we still want the max contrast to stay the same, so we scale
+    // them dependend on the distance between the centres of the Lorentzians.
+    const delta = Math.abs(esr_pos - esr_neg)
+    const width = 2*linewidth/(delta + 1)
+
+    return width/2 * width/(delta^2+width^2) + 1
+}
+
 // Function to compute the linewidths based on the centers
 export function computeLinewidths(centers) {
     // For simplicity, assume a constant linewidth
