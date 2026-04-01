@@ -96,17 +96,20 @@ export function computeESRFrequencies(magneticFieldStrength, theta, zeroFieldSpl
 export function computeAmplitudes(centers) {
     // For simplicity, assume the same amplitude for all centers
     // To be modified in the future.
-    return centers.map(() => -0.1);
+
+    const numCenters = centers.length
+    const maxContrast = (numCenters == 2) ? 0.3 : 0.2;
+    const scaling = computeScaling(centers[0], centers[1])
+    return centers.map(() => - maxContrast * Math.PI * linewidth * scaling);
 }
 
 // Function to compute the scaling factor of Lorentzians for ESR frequencies belonging to the same NV-axis
 export function computeScaling(esr_neg, esr_pos) {
     // When adding two Lorentzians, we still want the max contrast to stay the same, so we scale
-    // them dependend on the distance between the centres of the Lorentzians.
+    // them dependend on the distance between the centers of the Lorentzians.
     const delta = Math.abs(esr_pos - esr_neg)
     const width = 2*linewidth/(delta + 1)
-
-    return width/2 * width/(delta^2+width^2) + 1
+    return - width/2 * width/(delta**2+width**2) + 1
 }
 
 // Function to compute the linewidths based on the centers
