@@ -68,14 +68,15 @@ export function computePlots(nv_dict, x, maxContrast, noise_centers = 0) {
 
 // Function to combine the plots of each nv axis into one y vector
 export function combinePlots(nv_dict, x, useAllAxes, noise_y = 0) {
-    let result = x.map(() => 0);
+    let result;
     
-    const numAxes = (useAllAxes) ? 4 : 1;
-
-    // TODO: dicts dont have an order, this doesnt do what we expect
-    for (let ix = 0; ix < numAxes; ix++) {
-        let axis = Object.keys(nv_dict)[ix]
-        result = result.map((value, ix) => value + nv_dict[axis]['plot'][ix]);
+    if (useAllAxes) {
+        result = x.map(() => 0);
+        nv_axes_names.forEach((axis, ix) => {
+            result = result.map((value, ix) => value + nv_dict[axis]['plot'][ix]);
+        });
+    } else {
+        result = nv_dict['nv_111']['plot'];
     }
 
     // Translate to have upper limit at 1
