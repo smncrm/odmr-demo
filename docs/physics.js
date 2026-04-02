@@ -80,10 +80,29 @@ export function computeCentersDict(nv_dict, magneticFieldStrength, x = 1, y = 1,
     for (let index = 0; index < 4; index++) {
         let axis = Object.keys(nv_dict)[index];
         nv_dict[axis]['mag_angle'] = angles[index];
-        nv_dict[axis]['centers'] = centers.slice(index * numCentersPerAxis, (index+1)*numCentersPerAxis);
+        nv_dict[axis]['ESR_centers'] = centers.slice(index * numCentersPerAxis, (index+1)*numCentersPerAxis);
     }
     
     return centers;
+}
+
+// Function to compute the plots for each nv axis.
+export function computePlots(nv_dict, x, maxContrast, noise = 0, constant = 0) {
+    
+    for (const axis in nv_dict) {
+        let result = x.map(() => constant);
+        
+        // Compute and sum up the Lorentzian for each ESR frequency
+        nv_dict[axis]['ESR_centers'].forEach((ESR_center) => {
+            let center = ESR_center + noise / 1000 * gaussianRandom(0, 1); // Add noise to the center
+            let singlePeak = singlePeakLorentzian(x, maxContrast * Math.PI * linewidth, center, linewidth, noise, 0);
+            result = result.map((value, index) => value + singlePeak[index]);
+        })
+        
+        // Scale the result to match the desired maximum contrast and translate to have max value at y=1
+        let minValue = Math.min(...result);
+        nv_dict[axis]['plot'] = result.map((value) => value * maxContrast/minValue + 1);
+    }
 }
 
 // Function to compute the zero-field splitting energy levels based on the temperature in Kelvin
