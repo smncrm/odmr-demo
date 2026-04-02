@@ -11,9 +11,9 @@ const hyperfineSplitting = 0.0022; // GHz, hyperfine splitting based on Nitrogen
 const linewidth = 0.007 
 
 // Single peak Lorentzian function
-function singlePeakLorentzian(x, amplitude, center, width, noise = 0, constant = 1) {
+function singlePeakLorentzian(x, amplitude, center, width) {
     // x is expected to be an array
-    return x.map(value => amplitude/Math.PI * (width / ((value - center) ** 2 + (width ** 2))) + constant + noise / 1000 * gaussianRandom(0, 1));
+    return x.map(value => amplitude/Math.PI * width / ((value - center) ** 2 + (width ** 2)));
 }
 
 // Multi-peak Lorentzian function
@@ -87,22 +87,50 @@ export function computeCentersDict(nv_dict, magneticFieldStrength, x = 1, y = 1,
 }
 
 // Function to compute the plots for each nv axis.
-export function computePlots(nv_dict, x, maxContrast, noise = 0, constant = 0) {
+export function computePlots(nv_dict, x, maxContrast, noise_centers = 0) {
     
+    let amplitude = maxContrast * Math.PI * linewidth; 
+
     for (const axis in nv_dict) {
-        let result = x.map(() => constant);
+        let result = x.map(() => 0);
         
         // Compute and sum up the Lorentzian for each ESR frequency
         nv_dict[axis]['ESR_centers'].forEach((ESR_center) => {
-            let center = ESR_center + noise / 1000 * gaussianRandom(0, 1); // Add noise to the center
-            let singlePeak = singlePeakLorentzian(x, maxContrast * Math.PI * linewidth, center, linewidth, noise, 0);
+            let center = ESR_center + noise_centers / 1000 * gaussianRandom(0, 1); // Add noise to the center
+            let singlePeak = singlePeakLorentzian(x, amplitude, center, linewidth);
             result = result.map((value, index) => value + singlePeak[index]);
         })
         
-        // Scale the result to match the desired maximum contrast and translate to have max value at y=1
+        // Scale the result to match the desired maximum contrast
         let minValue = Math.min(...result);
-        nv_dict[axis]['plot'] = result.map((value) => value * maxContrast/minValue + 1);
+        console.log('min Value in lorentzian ' + minValue)
+        nv_dict[axis]['plot'] = result.map((value) => value * maxContrast/minValue);
     }
+}
+
+// Function to combine the plots of each nv axis into one y vector
+export function combinePlots(nv_dict, x, useAllAxes, noise_y = 0) {
+    let result = x.map(() => 0);
+    
+    const numAxes = (useAllAxes) ? 4 : 1;
+
+    for (let ix = 0; ix < numAxes; ix++) {
+        let axis = Object.keys(nv_dict)[ix]
+        result = result.map((value, ix) => value + nv_dict[axis]['plot'][ix]);
+    }
+
+    // Translate to have upper limit at 1
+    result = result.map((value) => value + 1);
+
+    // Add noise and scale the result to still have max value at y=1
+    if (noise_y) {
+        console.log("yes noise if")
+        result = result.map((value) => value + noise_y / 1000 * gaussianRandom(0, 1));
+        let maxValue = Math.max(...result);
+        result = result.map((value) => value/maxValue);
+    }
+
+    return result
 }
 
 // Function to compute the zero-field splitting energy levels based on the temperature in Kelvin
