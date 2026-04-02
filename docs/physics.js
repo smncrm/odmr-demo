@@ -7,6 +7,7 @@ const nv_100 = [1, -1, -1];
 const nv_010 = [-1, 1, -1];
 const nv_001 = [-1, -1, 1];
 const nv_axes = [nv_111, nv_100, nv_010, nv_001];
+const nv_axes_names = ['nv_111', 'nv_100', 'nv_010', 'nv_001'];
 const hyperfineSplitting = 0.0022; // GHz, hyperfine splitting based on Nitrogen nuclei
 const linewidth = 0.007 
 
@@ -14,22 +15,6 @@ const linewidth = 0.007
 function singlePeakLorentzian(x, amplitude, center, width) {
     // x is expected to be an array
     return x.map(value => amplitude/Math.PI * width / ((value - center) ** 2 + (width ** 2)));
-}
-
-// Multi-peak Lorentzian function
-export function multiPeakLorentzian(x, amplitudes, centers, widths, noise = 0, constant = 1) {
-    // Create an array of ones with the same length as x, multiplied by the constant
-    let result = x.map(() => constant);
-
-    // Add each Lorentzian peak to the result
-    amplitudes.forEach((amplitude, i) => {
-        const center = centers[i] + noise / 1000 * gaussianRandom(0, 1); // Add noise to the center
-        const width = widths[i];
-        const singlePeak = singlePeakLorentzian(x, amplitude, center, width, noise, 0);
-        result = result.map((value, index) => value + singlePeak[index]);
-    });
-
-    return result;
 }
 
 // Function to compute the factor for projecting onto the NV axes, 
@@ -44,46 +29,20 @@ export function computeAngles(vector) {
 }
 
 // Function to update the centers based on the magnetic field strength (mT) and orientation
-export function computeCenters(magneticFieldStrength, x = 1, y = 1, z = 1, zeroFieldSplitting = 2.87, hyperfine = false) {
-    const mag_field_vector = [x, y, z];
-    const angles = computeAngles(mag_field_vector);
-
-    let centers = [];
-    angles.forEach(angle => {
-        const frequencies = computeESRFrequencies(magneticFieldStrength / 1000, angle, zeroFieldSplitting);
-        centers = centers.concat(frequencies);
-    });
-    if (hyperfine) {
-        centers = centers.map(center => [center - hyperfineSplitting, center, center + hyperfineSplitting]);
-        centers = centers.flat();
-    }
-
-    return centers;
-}
-
-// Function to update the centers based on the magnetic field strength (mT) and orientation
 export function computeCentersDict(nv_dict, magneticFieldStrength, x = 1, y = 1, z = 1, zeroFieldSplitting = 2.87, hyperfine = false) {
     const mag_field_vector = [x, y, z];
     const angles = computeAngles(mag_field_vector);
-    let centers = [];
-    angles.forEach(angle => {
-        const frequencies = computeESRFrequencies(magneticFieldStrength / 1000, angle, zeroFieldSplitting);
-        centers = centers.concat(frequencies);
+    
+    nv_axes_names.forEach((axis, ix) => {
+        nv_dict[axis]['mag_angle'] = angles[ix]
+        nv_dict[axis]['ESR_centers'] = computeESRFrequencies(magneticFieldStrength / 1000, angles[ix], zeroFieldSplitting);
+        
+        if (hyperfine) {
+            nv_dict[axis]['ESR_centers'] = nv_dict[axis]['ESR_centers'].map(center => 
+                [center - hyperfineSplitting, center, center + hyperfineSplitting]
+            ).flat();
+        }
     });
-    if (hyperfine) {
-        centers = centers.map(center => [center - hyperfineSplitting, center, center + hyperfineSplitting]);
-        centers = centers.flat();
-    }
-    
-    let numCentersPerAxis = (hyperfine) ? 6 : 2;
-
-    for (let index = 0; index < 4; index++) {
-        let axis = Object.keys(nv_dict)[index];
-        nv_dict[axis]['mag_angle'] = angles[index];
-        nv_dict[axis]['ESR_centers'] = centers.slice(index * numCentersPerAxis, (index+1)*numCentersPerAxis);
-    }
-    
-    return centers;
 }
 
 // Function to compute the plots for each nv axis.
@@ -103,7 +62,6 @@ export function computePlots(nv_dict, x, maxContrast, noise_centers = 0) {
         
         // Scale the result to match the desired maximum contrast
         let minValue = Math.min(...result);
-        console.log('min Value in lorentzian ' + minValue)
         nv_dict[axis]['plot'] = result.map((value) => value * maxContrast/minValue);
     }
 }
@@ -114,6 +72,7 @@ export function combinePlots(nv_dict, x, useAllAxes, noise_y = 0) {
     
     const numAxes = (useAllAxes) ? 4 : 1;
 
+    // TODO: dicts dont have an order, this doesnt do what we expect
     for (let ix = 0; ix < numAxes; ix++) {
         let axis = Object.keys(nv_dict)[ix]
         result = result.map((value, ix) => value + nv_dict[axis]['plot'][ix]);

@@ -1,6 +1,6 @@
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
 import { linspace } from "./utils.js";
-import { multiPeakLorentzian, computeCenters, computeCentersDict, computePlots, combinePlots, computeZeroFieldSplitting, computeAmplitudes, computeLinewidths } from "./physics.js";
+import { computeCentersDict, computePlots, combinePlots, computeZeroFieldSplitting, } from "./physics.js";
 
 // Generate x values
 const x = linspace(2.87 - 0.3, 2.87 + 0.3, 1000);
