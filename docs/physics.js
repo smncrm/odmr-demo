@@ -10,6 +10,8 @@ const nv_axes = [nv_111, nv_100, nv_010, nv_001];
 const nv_axes_names = ['nv_111', 'nv_100', 'nv_010', 'nv_001'];
 const hyperfineSplitting = 0.0022; // GHz, hyperfine splitting based on Nitrogen nuclei
 const linewidth = 0.007 
+const maxContrastSingleNV = 0.3
+const maxContrastEnsemble = 0.2
 
 // Single peak Lorentzian function
 function singlePeakLorentzian(x, amplitude, center, width) {
@@ -130,7 +132,7 @@ export function computeAmplitudes(centers) {
     // To be modified in the future.
 
     const numCenters = centers.length
-    const maxContrast = (numCenters == 2) ? 0.3 : 0.2;
+    const maxContrast = (numCenters == 2) ? maxContrastSingleNV : maxContrastEnsemble;
     const scaling = computeScaling(centers[0], centers[1])
     return centers.map(() => - maxContrast * Math.PI * linewidth * scaling);
 }
