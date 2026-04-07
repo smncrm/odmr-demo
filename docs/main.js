@@ -30,7 +30,6 @@ var nv_dict = {
 // Function to update the plot based on new inputs
 function updatePlot(magValue, temp = 300, noise = 0, xValue = 1, yValue = 1, zValue = 1, useAllAxes = false, hyperfine = false) {
 
-    let maxContrast = (useAllAxes) ? -0.05 : -0.3
     let noise_centers = noise
     let noise_y = noise * 2
     let updatedY;
@@ -38,7 +37,7 @@ function updatePlot(magValue, temp = 300, noise = 0, xValue = 1, yValue = 1, zVa
     let domainLowerLimit
 
     computeCentersDict(nv_dict, magValue, xValue, yValue, zValue, zeroFieldSplitting, hyperfine);
-    computePlots(nv_dict, x, maxContrast, noise_centers)
+    computePlots(nv_dict, x, useAllAxes, noise_centers)
     updatedY = combinePlots(nv_dict, x, useAllAxes, noise_y)
 
     // Combine x and updated y into a new data array

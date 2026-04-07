@@ -10,8 +10,8 @@ const nv_axes = [nv_111, nv_100, nv_010, nv_001];
 const nv_axes_names = ['nv_111', 'nv_100', 'nv_010', 'nv_001'];
 const hyperfineSplitting = 0.0022; // GHz, hyperfine splitting based on Nitrogen nuclei
 const linewidth = 0.007 
-const maxContrastSingleNV = 0.3
-const maxContrastEnsemble = 0.2
+const contrastSingleNV = -0.3
+const contrastEnsemble = -0.05
 
 // Single peak Lorentzian function
 function singlePeakLorentzian(x, amplitude, center, width) {
@@ -48,8 +48,9 @@ export function computeCentersDict(nv_dict, magneticFieldStrength, x = 1, y = 1,
 }
 
 // Function to compute the plots for each nv axis.
-export function computePlots(nv_dict, x, maxContrast, noise_centers = 0) {
+export function computePlots(nv_dict, x, useAllAxes, noise_centers = 0) {
     
+    const maxContrast = (useAllAxes) ? contrastEnsemble : contrastSingleNV;
     let amplitude = maxContrast * Math.PI * linewidth; 
 
     for (const axis in nv_dict) {
