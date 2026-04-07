@@ -79,7 +79,7 @@ const xInput = document.getElementById("x-value");
 const yInput = document.getElementById("y-value");
 const zInput = document.getElementById("z-value");
 const toggleAllAxes = document.getElementById('toggle-all-axes');
-const toggleHyperfine = document.getElementById('toggle-hyperfine');
+// const toggleHyperfine = document.getElementById('toggle-hyperfine');
 
 const updatePlotWithInputs = () => {
     const sliderMagValue = parseFloat(sliderMag.value);
@@ -89,7 +89,8 @@ const updatePlotWithInputs = () => {
     const yValue = parseFloat(yInput.value);
     const zValue = parseFloat(zInput.value);
     const useAllAxes = toggleAllAxes.checked;
-    const hyperfine = toggleHyperfine.checked;
+    // temporarily fix hyperfine parameter until feature is fixed
+    const hyperfine = false;
     updatePlot(sliderMagValue, sliderTempValue, sliderNoiseValue, xValue, yValue, zValue, useAllAxes, hyperfine);
 };
 
@@ -98,7 +99,8 @@ const updatePlotWithInputs = () => {
     input.addEventListener("input", updatePlotWithInputs);
 });
 
-[toggleAllAxes, toggleHyperfine].forEach(input => { input.addEventListener('change', updatePlotWithInputs); });
+// add toggleHyperfine to list when feature is fixed
+[toggleAllAxes].forEach(input => { input.addEventListener('change', updatePlotWithInputs); });
 
 // Initial plot rendering with default slider value
 updatePlot(parseFloat(sliderMag.value));

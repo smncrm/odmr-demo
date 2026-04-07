@@ -9,7 +9,7 @@ const nv_001 = [-1, -1, 1];
 const nv_axes = [nv_111, nv_100, nv_010, nv_001];
 const nv_axes_names = ['nv_111', 'nv_100', 'nv_010', 'nv_001'];
 const hyperfineSplitting = 0.0022; // GHz, hyperfine splitting based on Nitrogen nuclei
-const linewidth = 0.007 
+const linewidth = 0.008
 const contrastSingleNV = -0.3
 const contrastEnsemble = -0.05
 
@@ -51,11 +51,10 @@ export function computeCentersDict(nv_dict, magneticFieldStrength, x = 1, y = 1,
 export function computePlots(nv_dict, x, useAllAxes, noise_centers = 0) {
     
     const maxContrast = (useAllAxes) ? contrastEnsemble : contrastSingleNV;
-    let amplitude = maxContrast * Math.PI * linewidth; 
+    let amplitude = maxContrast * Math.PI * linewidth;
 
     for (const axis in nv_dict) {
         let result = x.map(() => 0);
-        
         // Compute and sum up the Lorentzian for each ESR frequency
         nv_dict[axis]['ESR_centers'].forEach((ESR_center) => {
             let center = ESR_center + noise_centers / 1000 * gaussianRandom(0, 1); // Add noise to the center
@@ -63,7 +62,7 @@ export function computePlots(nv_dict, x, useAllAxes, noise_centers = 0) {
             result = result.map((value, index) => value + singlePeak[index]);
         })
         
-        // Scale the result to match the desired maximum contrast
+        // Scale the result to match the desired maximum contrast per axis
         let minValue = Math.min(...result);
         nv_dict[axis]['plot'] = result.map((value) => value * maxContrast/minValue);
     }
