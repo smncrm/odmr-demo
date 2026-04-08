@@ -51,24 +51,27 @@ export function arcos(value, precision = 6) {
 // Function to create a data array containing {x, y, text} for labelling the dips
 export function getTextMarkData(nv_dict, x, updatedData, useAllAxes=false) {
     var d = [];
+    const colors = ['orange', 'green', 'brown', 'purple']
+    var count = 0
     for (const axis in nv_dict) {
         let esr_min = nv_dict[axis]['ESR_centers'][0]; 
         let esr_pos = nv_dict[axis]['ESR_centers'][1];
         if (esr_min.toFixed(3) == esr_pos.toFixed(3)) {
             let ix = getIndexInLinspace(esr_min, x);
             let y = updatedData[ix]['y'];
-            d.push({x: nv_dict[axis]['ESR_centers'][0]+0.02, y: y, label: axis});
+            d.push({x: nv_dict[axis]['ESR_centers'][0]+0.02, y: y, label: axis.slice(3), col: colors[count]});
         } else {
             let ix_min =  getIndexInLinspace(esr_min, x);
             let ix_pos =  getIndexInLinspace(esr_pos, x);
             let y_min = updatedData[ix_min]['y'].toFixed(2);
             let y_pos = updatedData[ix_pos]['y'].toFixed(2);
-            d.push({x: nv_dict[axis]['ESR_centers'][0]-0.02, y: y_min, label: axis+'-'});
-            d.push({x: nv_dict[axis]['ESR_centers'][1]+0.03, y: y_pos, label: axis+'+'});
+            d.push({x: nv_dict[axis]['ESR_centers'][0]-0.02, y: y_min, label: axis.slice(3)+'-', col: colors[count]});
+            d.push({x: nv_dict[axis]['ESR_centers'][1]+0.03, y: y_pos, label: axis.slice(3)+'+', col: colors[count]});
         }
         if (!useAllAxes) {
             break
         }
+        count = count + 1
     }
 
     return d

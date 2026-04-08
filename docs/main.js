@@ -58,7 +58,7 @@ function updatePlot(magValue, temp = 300, noise = 0, xValue = 1, yValue = 1, zVa
         },
         marks: [
             Plot.line(updatedData, {x: "x", y: "y", stroke: "steelblue"}),
-            Plot.text(textData, {x:'x', y:'y', text: `label`})
+            Plot.text(textData, {x:'x', y:'y', text: `label`, fill: 'col'})
         ]
     });
 
