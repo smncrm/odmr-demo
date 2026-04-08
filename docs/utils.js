@@ -39,3 +39,30 @@ export function arcos(value, precision = 6) {
     }
     return Math.acos(value);
 }
+
+// Function to create a data array containing {x, y, text} for labelling the dips
+export function getTextMarkData(nv_dict, updatedData, useAllAxes=false) {
+    var d = []
+
+    for (const axis in nv_dict) {
+        let esr_min = nv_dict[axis]['ESR_centers'][0] 
+        let esr_pos = nv_dict[axis]['ESR_centers'][1]
+        if (esr_min.toFixed(3) == esr_pos.toFixed(3)) {
+            let ix =  Math.round((esr_min - 2.87)/0.006/999 + 500)
+            let y = updatedData[ix]['y']
+            d.push({x: nv_dict[axis]['ESR_centers'][0]+0.02, y: y, label: axis})
+        } else {
+            let ix_min =  Math.round((esr_min - 2.87)/(0.6/999) + 500)
+            let ix_pos =  Math.round((esr_pos - 2.87)/(0.6/999) + 500)
+            let y_min = updatedData[ix_min]['y'].toFixed(2)
+            let y_pos = updatedData[ix_pos]['y'].toFixed(2)
+            d.push({x: nv_dict[axis]['ESR_centers'][0]-0.02, y: y_min, label: axis+'-'});
+            d.push({x: nv_dict[axis]['ESR_centers'][1]+0.03, y: y_pos, label: axis+'+'});
+        }
+        if (!useAllAxes) {
+            break
+        }
+    }
+
+    return d
+}

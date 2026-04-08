@@ -1,5 +1,5 @@
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
-import { linspace } from "./utils.js";
+import { linspace, getTextMarkData } from "./utils.js";
 import { computeCentersDict, computePlots, combinePlots, computeZeroFieldSplitting, } from "./physics.js";
 
 // Generate x values
@@ -44,6 +44,7 @@ function updatePlot(magValue, temp = 300, noise = 0, xValue = 1, yValue = 1, zVa
     const updatedData = x.map((xi, i) => ({ x: xi, y: updatedY[i] }));
 
     // Create a new plot
+    const textData = getTextMarkData(nv_dict, updatedData, useAllAxes)
     domainLowerLimit = (useAllAxes) ? 0.75 : 0.65
     const updatedPlot = Plot.plot({
         x: {
@@ -53,11 +54,11 @@ function updatePlot(magValue, temp = 300, noise = 0, xValue = 1, yValue = 1, zVa
         y: {
             label: "Fluorescence (normalised)",
             grid: true,
-            // round to first decimal, but use slightly smaller number, hence the division
             domain: [domainLowerLimit, 1],
         },
         marks: [
-            Plot.line(updatedData, { x: "x", y: "y", stroke: "steelblue" })
+            Plot.line(updatedData, {x: "x", y: "y", stroke: "steelblue"}),
+            Plot.text(textData, {x:'x', y:'y', text: `label`})
         ]
     });
 
