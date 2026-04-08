@@ -59,7 +59,7 @@ export function getTextMarkData(nv_dict, x, updatedData, useAllAxes=false) {
         if (esr_min.toFixed(3) == esr_pos.toFixed(3)) {
             let ix = getIndexInLinspace(esr_min, x);
             let y = updatedData[ix]['y'];
-            d.push({x: esr_min + 0.01, y: y, label: axis.slice(3), col: colors[count]});
+            d.push({x: esr_min + 0.02, y: y, label: axis.slice(3), col: colors[count]});
         } else {
             let ix_min =  getIndexInLinspace(esr_min, x);
             let ix_pos =  getIndexInLinspace(esr_pos, x);
