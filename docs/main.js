@@ -28,7 +28,7 @@ var nv_dict = {
 }
 
 // Function to update the plot based on new inputs
-function updatePlot(magValue, temp = 300, noise = 0, xValue = 1, yValue = 1, zValue = 1, useAllAxes = false, hyperfine = false) {
+function updatePlot(magValue, temp = 300, noise = 0, xValue = 1, yValue = 1, zValue = 1, useAllAxes = false, hyperfine = false, showLabels = false) {
 
     let noise_centers = noise
     let noise_y = noise * 2
@@ -44,8 +44,13 @@ function updatePlot(magValue, temp = 300, noise = 0, xValue = 1, yValue = 1, zVa
     const updatedData = x.map((xi, i) => ({ x: xi, y: updatedY[i] }));
 
     // Create a new plot
-    const textData = getTextMarkData(nv_dict, x, updatedData, useAllAxes)
     domainLowerLimit = (useAllAxes) ? 0.75 : 0.65
+    
+    if (showLabels) {
+        var textData = getTextMarkData(nv_dict, x, updatedData, useAllAxes)
+    } else {
+        var textData = [{}]
+    }
     const updatedPlot = Plot.plot({
         x: {
             label: "Frequency (GHz)",
@@ -80,6 +85,7 @@ const xInput = document.getElementById("x-value");
 const yInput = document.getElementById("y-value");
 const zInput = document.getElementById("z-value");
 const toggleAllAxes = document.getElementById('toggle-all-axes');
+const toggleLabels = document.getElementById('toggle-labels');
 // const toggleHyperfine = document.getElementById('toggle-hyperfine');
 
 const updatePlotWithInputs = () => {
@@ -90,9 +96,10 @@ const updatePlotWithInputs = () => {
     const yValue = parseFloat(yInput.value);
     const zValue = parseFloat(zInput.value);
     const useAllAxes = toggleAllAxes.checked;
+    const showLabels = toggleLabels.checked;
     // temporarily fix hyperfine parameter until feature is fixed
     const hyperfine = false;
-    updatePlot(sliderMagValue, sliderTempValue, sliderNoiseValue, xValue, yValue, zValue, useAllAxes, hyperfine);
+    updatePlot(sliderMagValue, sliderTempValue, sliderNoiseValue, xValue, yValue, zValue, useAllAxes, hyperfine, showLabels);
 };
 
 
@@ -101,7 +108,7 @@ const updatePlotWithInputs = () => {
 });
 
 // add toggleHyperfine to list when feature is fixed
-[toggleAllAxes].forEach(input => { input.addEventListener('change', updatePlotWithInputs); });
+[toggleAllAxes, toggleLabels].forEach(input => { input.addEventListener('change', updatePlotWithInputs); });
 
 // Initial plot rendering with default slider value
 updatePlot(parseFloat(sliderMag.value));

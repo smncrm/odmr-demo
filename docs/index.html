@@ -109,7 +109,7 @@
 
         <div class="row">
             <div class="columnleft">
-                <label for="toggle-all-axes">Use NV ensemble:</label>
+                <label for="toggle-all-axes">Use NV ensemble</label>
             </div>
             <div class="columnright">
                 <label class="switch" style="float: right;">
@@ -121,7 +121,7 @@
 
         <div class="row" id="orientation-row" style="display: none;">
             <div class="columnleft">
-                <label>Magnetic field orientation:</label>
+                <label>Magnetic field orientation</label>
             </div>
             <div class="columnright">
                 <div style="float:right">
@@ -140,6 +140,19 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="columnleft">
+                <label for="toggle-labels">Show labels</label>
+            </div>
+            <div class="columnright">
+                <label class="switch" style="float: right;">
+                <input type="checkbox" id="toggle-labels">
+                <span class="slider"></span>
+            </label>
+            </div>
+        </div>
+
         <script>
             const toggleAllAxes = document.getElementById('toggle-all-axes');
             const orientationRow = document.getElementById('orientation-row');
