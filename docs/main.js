@@ -44,7 +44,7 @@ function updatePlot(magValue, temp = 300, noise = 0, xValue = 1, yValue = 1, zVa
     const updatedData = x.map((xi, i) => ({ x: xi, y: updatedY[i] }));
 
     // Create a new plot
-    const textData = getTextMarkData(nv_dict, updatedData, useAllAxes)
+    const textData = getTextMarkData(nv_dict, x, updatedData, useAllAxes)
     domainLowerLimit = (useAllAxes) ? 0.75 : 0.65
     const updatedPlot = Plot.plot({
         x: {

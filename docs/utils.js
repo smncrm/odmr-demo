@@ -4,6 +4,14 @@ export function linspace(start, stop, num) {
     return Array.from({ length: num }, (_, i) => start + i * step);
 }
 
+export function getIndexInLinspace(x, linspaced) {
+    const steps = linspaced.length;
+    const step = (linspaced[steps-1] - linspaced[0])/(steps - 1);
+    const center_ix = Math.round(linspaced.length / 2);
+
+    return Math.round((x - linspaced[center_ix])/step + center_ix)
+}
+
 // Function to enforce minimum and maximum values on an input element
 export function enforceMinMax(el) {
     if (el.value != "") {
@@ -41,21 +49,20 @@ export function arcos(value, precision = 6) {
 }
 
 // Function to create a data array containing {x, y, text} for labelling the dips
-export function getTextMarkData(nv_dict, updatedData, useAllAxes=false) {
-    var d = []
-
+export function getTextMarkData(nv_dict, x, updatedData, useAllAxes=false) {
+    var d = [];
     for (const axis in nv_dict) {
-        let esr_min = nv_dict[axis]['ESR_centers'][0] 
-        let esr_pos = nv_dict[axis]['ESR_centers'][1]
+        let esr_min = nv_dict[axis]['ESR_centers'][0]; 
+        let esr_pos = nv_dict[axis]['ESR_centers'][1];
         if (esr_min.toFixed(3) == esr_pos.toFixed(3)) {
-            let ix =  Math.round((esr_min - 2.87)/0.006/999 + 500)
-            let y = updatedData[ix]['y']
-            d.push({x: nv_dict[axis]['ESR_centers'][0]+0.02, y: y, label: axis})
+            let ix = getIndexInLinspace(esr_min, x);
+            let y = updatedData[ix]['y'];
+            d.push({x: nv_dict[axis]['ESR_centers'][0]+0.02, y: y, label: axis});
         } else {
-            let ix_min =  Math.round((esr_min - 2.87)/(0.6/999) + 500)
-            let ix_pos =  Math.round((esr_pos - 2.87)/(0.6/999) + 500)
-            let y_min = updatedData[ix_min]['y'].toFixed(2)
-            let y_pos = updatedData[ix_pos]['y'].toFixed(2)
+            let ix_min =  getIndexInLinspace(esr_min, x);
+            let ix_pos =  getIndexInLinspace(esr_pos, x);
+            let y_min = updatedData[ix_min]['y'].toFixed(2);
+            let y_pos = updatedData[ix_pos]['y'].toFixed(2);
             d.push({x: nv_dict[axis]['ESR_centers'][0]-0.02, y: y_min, label: axis+'-'});
             d.push({x: nv_dict[axis]['ESR_centers'][1]+0.03, y: y_pos, label: axis+'+'});
         }
