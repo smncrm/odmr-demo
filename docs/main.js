@@ -81,9 +81,12 @@ const sliderNoise = document.getElementById("slider-noise");
 const manualInputNoise = document.getElementById("manual-input-noise");
 const sliderTemp = document.getElementById("slider-temp");
 const manualInputTemp = document.getElementById("manual-input-temp");
-const xInput = document.getElementById("x-value");
-const yInput = document.getElementById("y-value");
-const zInput = document.getElementById("z-value");
+const sliderX = document.getElementById("slider-x");
+const manualInputX = document.getElementById("manual-input-x");
+const sliderY = document.getElementById("slider-y");
+const manualInputY = document.getElementById("manual-input-y");
+const sliderZ = document.getElementById("slider-z");
+const manualInputZ = document.getElementById("manual-input-z");
 const toggleAllAxes = document.getElementById('toggle-all-axes');
 const toggleLabels = document.getElementById('toggle-labels');
 // const toggleHyperfine = document.getElementById('toggle-hyperfine');
@@ -92,18 +95,18 @@ const updatePlotWithInputs = () => {
     const sliderMagValue = parseFloat(sliderMag.value);
     const sliderNoiseValue = parseFloat(sliderNoise.value);
     const sliderTempValue = parseFloat(sliderTemp.value);
-    const xValue = parseFloat(xInput.value);
-    const yValue = parseFloat(yInput.value);
-    const zValue = parseFloat(zInput.value);
+    const sliderXValue = parseFloat(sliderX.value);
+    const sliderYValue = parseFloat(sliderY.value);
+    const sliderZValue = parseFloat(sliderZ.value);
     const useAllAxes = toggleAllAxes.checked;
     const showLabels = toggleLabels.checked;
     // temporarily fix hyperfine parameter until feature is fixed
     const hyperfine = false;
-    updatePlot(sliderMagValue, sliderTempValue, sliderNoiseValue, xValue, yValue, zValue, useAllAxes, hyperfine, showLabels);
+    updatePlot(sliderMagValue, sliderTempValue, sliderNoiseValue, sliderXValue, sliderYValue, sliderZValue, useAllAxes, hyperfine, showLabels);
 };
 
 
-[sliderMag, manualInputMag, sliderNoise, manualInputNoise, sliderTemp, manualInputTemp, xInput, yInput, zInput].forEach(input => {
+[sliderMag, manualInputMag, sliderNoise, manualInputNoise, sliderTemp, manualInputTemp, sliderX, manualInputX, sliderY, manualInputY, sliderZ, manualInputZ].forEach(input => {
     input.addEventListener("input", updatePlotWithInputs);
 });
 
