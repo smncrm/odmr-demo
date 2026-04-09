@@ -93,19 +93,6 @@
 
             });
         </script>
-        <!--
-        <div class="row">
-            <div class="columnleft">
-                <label for="toggle-hyperfine">Nitrogen hyperfine splitting:</label>
-            </div>
-            <div class="columnright">
-                <label class="switch" style="float: right;">
-                <input type="checkbox" id="toggle-hyperfine">
-                <span class="slider"></span>
-                </label>
-            </div>
-        </div>
-        -->
 
         <div class="row">
             <div class="columnleft">
@@ -162,6 +149,33 @@
         </script>
 
     </div>
+    
+    <div class="input-container">
+        <button type="button" class="collapsible">Explanation and implementation details</button>
+        <div class="content">
+            <div class="content-title">
+                <p>Energy levels of the NV</p>
+            </div>
+            <p>Lorem ipsum...</p>
+        
+        </div>
+    </div>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+            content.style.display = "none";
+            } else {
+            content.style.display = "block";
+            }
+        });
+        }
+    </script>
 
 </body>
 
