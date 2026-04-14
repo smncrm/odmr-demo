@@ -212,7 +212,7 @@
             <p>
                 A NV centre in diamond has an orientation given by the diamond lattice. It can be oriented along (1,1,1), (1,-1,-1), (-1,1,-1), or (-1,-1,1). In this visualisation we denote those orientations as 111, 100, 010, and 001.
                 If we have a diamond with not just one but many NV centres, we speak of an ensemble. We can produce diamonds with specifically oriented NV centres, but in this visualisation we assume an equal distribution among all orientations.<br>
-                The external magnetic field has then different influences on the different orientations: the more aligned the magnetic field vector with the orientation of the NV centre, the stronger the effect on the ESR frequencies.
+                The external magnetic field has then different influences on the different orientations: the more aligned the magnetic field vector with the orientation of the NV centre, the stronger the effect on the ESR frequencies. Therefore, we can see up to 8 dips in the graph.
             </p>
 
             <div class="content-title">
@@ -220,9 +220,27 @@
             </div>
             <p>
                 Along the vertical axis, we plot the normalised fluorescence. We assume an optimal contrast of ~30% for a single NV centre and around ~20% for an ensemble of NVs. For an ensemble the contrast is lower due to losses in the diamond and the 20% contrast is split onto the different orientations, i.e., every axis accounts for ~5% of the contrast. 
-                The maximum contrast can then only be reached when there is no external magnetic field, so all axis have an ESR at the zero-field splitting.
+                The maximum contrast can then only be reached when there is no external magnetic field, so all axes have an ESR at the zero-field splitting.
             </p>
-        
+            
+            <div class="content-title">
+                <p>Implementation</p>
+            </div>
+            <p>
+                First, we compute the zero-field splitting based on the temperature as given <a href="https://journals.aps.org/prx/abstract/10.1103/PhysRevX.2.031001">here</a>.
+            </p>
+            <p>
+                Next, we calculate the angles of the magnetic field vector to each NV axis and then compute the ESR frequencies for each axis based on the magnetic field strength, the angle, and the zero-field splitting as given in <a href="https://arxiv.org/pdf/2504.20750">'Limits of absolute vector magnetometry with NV centers in diamond'</a>, Section II.B. We ignore the strain in our calculations.
+            </p>
+            <p>
+                For each axis we compute two Lorentzians, one with its center at ESR- and one at ESR+. Here, amplitude and linewidth of the Lorentzians are simply chosen in a way to 'look nice' in the graph. We then add those two Lorentzians together and scale the result (the 'plot' for this axis) so that the max value is at 1.00 and the minimum is at 0.7 (when using a single NV centre, so a maximum contrast of 30%) or at 0.95 (when using an ensemble of NV centres and each axis accounts for 5% of the contrast).
+            </p>
+            <p>
+                Finally, we display the resulting graph: In the case of a single NV centre we simply show the plot of the axis 111; in the case of an ensemble we sum up the plots of all four axes.
+            </p>
+            <p>
+                For more details, you can find the code at <a href="https://github.com/smncrm/odmr-demo">https://github.com/smncrm/odmr-demo</a>.
+            </p>
         </div>
     </div>
     <script>
